@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL_User", "BLL_User\BLL_User.csproj", "{CDC82972-5682-4D36-8A30-99B1D710B0DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PL_User", "PL_User\PL_User.csproj", "{D98433F0-A3D6-4BAB-9228-7DB862BF6C7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL_User", "DAL_User\DAL_User.csproj", "{7AF00C4C-DE0E-46B0-AEDC-B95043A9F40D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CDC82972-5682-4D36-8A30-99B1D710B0DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDC82972-5682-4D36-8A30-99B1D710B0DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDC82972-5682-4D36-8A30-99B1D710B0DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDC82972-5682-4D36-8A30-99B1D710B0DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D98433F0-A3D6-4BAB-9228-7DB862BF6C7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D98433F0-A3D6-4BAB-9228-7DB862BF6C7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D98433F0-A3D6-4BAB-9228-7DB862BF6C7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D98433F0-A3D6-4BAB-9228-7DB862BF6C7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AF00C4C-DE0E-46B0-AEDC-B95043A9F40D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AF00C4C-DE0E-46B0-AEDC-B95043A9F40D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AF00C4C-DE0E-46B0-AEDC-B95043A9F40D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AF00C4C-DE0E-46B0-AEDC-B95043A9F40D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2F17C791-C272-4D6C-A749-12DE322BFA1A}
+	EndGlobalSection
+EndGlobal

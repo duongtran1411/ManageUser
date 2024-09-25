@@ -1,0 +1,469 @@
+﻿
+@{
+    Layout = null;
+}
+@using BLL_User.DTO
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css" />
+    <title>ListUser</title>
+    <style>
+        .error {
+            font-weight: 600;
+            color: red
+        }
+
+        sup {
+            color: orangered
+        }
+    </style>
+</head>
+<body>
+    <h1 class="text-center">Manage User</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <a class="btn btn-primary" id="myButton">+ Add</a>
+            </div>
+            <table id="tableUser" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>UserName</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>CreatedTime</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var o in ViewData["listUser"] as List<UserDTO>)
+                    {
+                        <tr>
+                            <td>@o.id</td>
+                            <td>@o.userName</td>
+                            <td>@o.firstName</td>
+                            <td>@o.lastName</td>
+                            <td>@o.email</td>
+                            <td>@o.phone</td>
+                            <td>@o.createdTime</td>
+                            <td class="d-flex">
+                                <button id="editUser" class="btn btn-success" onclick="EditUser(@o.id)">Edit</button>
+                                <button class="btn btn-danger" onclick="DeleteUser(@o.id)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content p-4">
+                <div class="modal-body p-0">
+                    <form action="/User/AddUser" method="post" id="formUser">
+                        <h3 class="text-center">ADD USER</h3>
+                        <div class="row pb-2">
+                            <div class="col-6">
+                                <label class="form-label"><sup>*</sup>FirstName:</label>
+                                <input type="text" class="form-control" name="firstName" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label"><sup>*</sup>LastName:</label>
+                                <input type="text" class="form-control" name="lastName" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 pb-2">
+                                <label class="form-label"><sup>*</sup>Email:</label>
+                                <input type="email" class="form-control" name="email" />
+                            </div>
+
+                            <div class="col-12 pb-2">
+                                <label class="form-label"><sup>*</sup>Phone:</label>
+                                <input type="text" class="form-control" name="phone" />
+                            </div>
+
+                            <div class="col-12 pb-2">
+                                <label class="form-label"><sup>*</sup>UserName:</label>
+                                <input type="text" class="form-control" name="userName" />
+                            </div>
+                            <div class="col-12 pb-2">
+                                <label class="form-label"><sup>*</sup>Password:</label>
+                                <input type="password" class="form-control" name="password" id="password" />
+                            </div>
+                            <div class="col-12 pb-2">
+                                <label class="form-label"><sup>*</sup>Confirm Password:</label>
+                                <input type="password" class="form-control" name="confirm_password" />
+                            </div>
+                            <div class="col-12 pt-3">
+                                <button class="btn btn-primary w-100" type="submit">Add User</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="inforUserDetail" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content p-4">
+                <div class="modal-body p-0">
+                    <h3 class="text-center">EDIT USER</h3>
+                    <form action="/User/EditUser" method="post" id="formEdit">
+                        <div class="row pb-2">
+                            <div class="col-6">
+                                <label class="form-label"><sup>*</sup>FirstName:</label>
+                                <input type="text" class="form-control" name="firstName" id="editFirstName" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label"><sup>*</sup>LastName:</label>
+                                <input type="text" class="form-control" name="lastName" id="editLastName" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 pb-2">
+                                <label class="form-label"><sup>*</sup>Email:</label>
+                                <input type="email" class="form-control" name="email" id="editEmail" />
+                            </div>
+
+                            <div class="col-12 pb-2">
+                                <label class="form-label">Id</label>
+                                <input type="text" class="form-control" name="id" id="editId" readonly />
+                            </div>
+
+                            <div class="col-12 pb-2">
+                                <label class="form-label"><sup>*</sup>Phone:</label>
+                                <input type="text" class="form-control" name="phone" id="editPhone" />
+                            </div>
+
+                            <div class="col-12 pb-2">
+                                <label class="form-label"><sup>*</sup>UserName:</label>
+                                <input type="text" class="form-control" name="userName" id="editUserName" />
+                            </div>
+                            <div class="col-12 pb-2">
+                                <label class="form-label"><sup>*</sup>Password:</label>
+                                <input type="password" class="form-control" name="password" id="editPassword" />
+                            </div>
+                            
+                            <div class="col-12 pt-3">
+                                <button class="btn btn-primary w-100" type="submit">Save User</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.7/js/dataTables.js"></script>
+<script>
+    function showModalAdd() {
+        var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+        myModal.show();
+    }
+    document.getElementById('myButton').addEventListener('click', showModalAdd);
+
+
+    function showModal() {
+        var myModal = new bootstrap.Modal(document.getElementById('inforUserDetail'));
+        myModal.show();
+    }
+
+
+</script>
+
+<script>
+    function EditUser(id) {
+        $.ajax({
+            url: "/User/GetUserToEdit",
+            type: "get",
+            data: {
+                userId: id
+            },
+            success: function (response) {
+                $('#editId').val(response.id);
+                $('#editFirstName').val(response.firstName);
+                $('#editLastName').val(response.lastName);
+                $('#editEmail').val(response.email);
+                $('#editPhone').val(response.phone);
+                $('#editUserName').val(response.userName);
+                $('#editPassword').val(response.password);
+                showModal();
+            },
+            error: function (xhr) {
+                console.log(first_name)
+                console.log(xhr)
+            }
+        });
+    };
+
+
+</script>
+
+<script>
+    function DeleteUser(id) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Will you delete user",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete user!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/User/DeleteUser",
+                    type: "get",
+                    data: {
+                        userId: id
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "User has been deleted",
+                            icon: "success"
+                        });
+                        setTimeout(() => {
+                            location.reload();
+                        }, 2000)
+                    },
+                    error: function (xhr) {
+                        console.log(xhr)
+                    }
+                })
+            }
+        });
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#tableUser').DataTable();
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        $.validator.addMethod("RegexPassword", function (value, element) {
+            return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%^&*?])[a-zA-Z0-9!#$%^&*?]{8,}$/.test(value);
+        }, "Password at least 1 special char, digit and upper letter");
+
+
+        $("#formEdit").validate({
+            rules: {
+                firstName: {
+                    required: true,
+                    maxlength: 50
+                },
+                lastName: {
+                    required: true,
+                    maxlength: 50
+                },
+                userName: {
+                    required: true,
+                    minlength: 8
+                },
+                password: {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 100,
+                    RegexPassword: true
+                },
+                confirm_password: {
+                    required: true,
+                    equalTo: password
+                },
+                phone: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 10
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    maxlength: 50
+                }
+            },
+            messages: {
+                firstName: {
+                    required: "Please enter your first name"
+                },
+                lastName: {
+                    required: "Please enter your last name"
+                },
+                userName: {
+                    required: "Please enter your user name",
+                    minlength: "User name at least 8 character"
+                },
+                password: {
+                    required: "Please enter your password",
+                    minlength: "Password at least 8 character",
+                    maxlength: "Password over 100 characters",
+                    RegexPassword: "Password at least 1 special char, digit and upper letter"
+                },
+                confirm_password: {
+                    required: "Please enter your re-password",
+                    equalTo: "Not match password"
+                },
+                phone: {
+                    required: "Please enter your phone number",
+                    minlength: "Phone number at least 10 digits",
+                    maxlength: "Phone number can over 10 digits"
+                },
+                email: {
+                    required: "Please enter your email",
+                    email: "Email must be correct format example@domain.com",
+                    maxlength: "Email can not over 50 characters"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $.validator.addMethod("RegexPassword", function (value, element) {
+            return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%^&*?])[a-zA-Z0-9!#$%^&*?]{8,}$/.test(value);
+        }, "Password at least 1 special char, digit and upper letter");
+
+
+        $("#formUser").validate({
+            rules: {
+                firstName: {
+                    required: true,
+                    maxlength: 50
+                },
+                lastName: {
+                    required: true,
+                    maxlength: 50
+                },
+                userName: {
+                    required: true,
+                    minlength: 8
+                },
+                password: {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 100,
+                    RegexPassword: true
+                },
+                confirm_password: {
+                    required: true,
+                    equalTo: password
+                },
+                phone: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 10
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    maxlength: 50
+                }
+            },
+            messages: {
+                firstName: {
+                    required: "Please enter your first name"
+                },
+                lastName: {
+                    required: "Please enter your last name"
+                },
+                userName: {
+                    required: "Please enter your user name",
+                    minlength: "User name at least 8 character"
+                },
+                password: {
+                    required: "Please enter your password",
+                    minlength: "Password at least 8 character",
+                    maxlength: "Password over 100 characters",
+                    RegexPassword: "Password at least 1 special char, digit and upper letter"
+                },
+                confirm_password: {
+                    required: "Please enter your re-password",
+                    equalTo: "Not match password"
+                },
+                phone: {
+                    required: "Please enter your phone number",
+                    minlength: "Phone number at least 10 digits",
+                    maxlength: "Phone number can over 10 digits"
+                },
+                email: {
+                    required: "Please enter your email",
+                    email: "Email must be correct format example@domain.com",
+                    maxlength: "Email can not over 50 characters"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
+
+<script>
+        const result = '@TempData["updateSuccess"]';
+        if (result) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: result,
+                showConfirmButton: false,
+                timer: 1500
+            });
+    }
+
+        const resultFailed = '@TempData["updateFailed"]';
+        if (resultFailed) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: resultFailed,
+                showConfirmButton: false,
+                timer: 1500
+            });
+    }
+
+    const resultAdd = '@TempData["AddSuccess"]';
+    if (resultAdd) {
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: resultAdd,
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
+
+    const resultAddFailed = '@TempData["AddFailed"]';
+
+    if (resultAddFailed) {
+        Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: resultAddFailed,
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
+
+
+</script>
