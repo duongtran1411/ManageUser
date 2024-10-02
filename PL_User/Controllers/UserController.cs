@@ -1,94 +1,84 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing.Configuration;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using BLL_User;
-using BLL_User.DTO;
+using BLL_User.BUS;
+using BLL_User.Model;
+using Newtonsoft.Json.Linq;
 
 namespace PL_User.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
-        private CRUDUser _user = new CRUDUser();
+        private UserServices _services = new UserServices();
         // GET: User
+        public ActionResult Index()
+        {
+            return View();
+        }
+        
         public ActionResult ListUser()
         {
-            List<UserDTO> listUser = _user.GetUsers();
-            ViewData["listUser"] = listUser;
-            return View();
+            try
+            {
+                var draw = HttpContext.Request.Form.GetValues("draw").FirstOrDefault();
+                var skip = Convert.ToInt32(Request.Form.GetValues("start").FirstOrDefault());
+                var take = Convert.ToInt32(Request.Form.GetValues("length").FirstOrDefault());
+                var searchText = Request.Form.GetValues("search[value]").FirstOrDefault();
+                Debug.WriteLine($"draw:{draw} skip: {skip} take: {take} text:{searchText}");
+                var totalRecord = 0;
+                var listUser = _services.GetUserByPaging(new FilterDTO { SkipCount = skip, PageCount = take, FilterSearch = searchText }, out totalRecord);
+                
+                return Json(new { draw = draw, recordsFiltered = totalRecord, recordsTotal = totalRecord, data = listUser });
+            }
+            catch (Exception)
+            {
+                return Json(new { recordsFiltered = 0, recordsTotal = 0, data = new List<UserDTO>()});
+            }
         }
 
         [HttpPost]
         public ActionResult AddUser(UserDTO userDTO)
         {
-            if (_user.DupplicateUser(userDTO))
+            if (_services.CreateUser(userDTO))
             {
-                _user.AddUserToList(userDTO);
-                TempData["AddSuccess"] = "User has added";
-                return RedirectToAction("ListUser", "User");
+                TempData["AddSuccess"] = "Add Successful";
+                return RedirectToAction("Index", "User");
             }
             else
             {
                 TempData["AddFailed"] = "Username is existed";
-                return RedirectToAction("ListUser", "User");
-
+                return RedirectToAction("Index", "User");
             }
         }
 
         public void DeleteUser(int userId)
         {
-            _user.RemoveUser(userId);
+            string message = "";
+            _services.DeleteUserById(userId, message);
         }
 
         [HttpPost]
         public ActionResult EditUser(UserDTO user)
         {
-
-            if (_user.DupplicateUser(user))
+            if (_services.EditUser(user))
             {
-                if (_user.AllowEdit(user))
-                {
-                    var originalUser = _user.GetUserById(user.id);
-                    if (user.userName == originalUser.userName)
-                    {
-                        TempData["updateSuccess"] = "No changes made, but successful.";
-                        return RedirectToAction("ListUser", "User");
-                    }
-                    TempData["updateFailed"] = "Change Unsuccessful";
-                    return RedirectToAction("ListUser", "User");
-                }
-                else
-                {
-                    
-                    _user.EditUser(user);
-                    TempData["updateSuccess"] = "Change Successful";
-                    return RedirectToAction("ListUser", "User");
-                }
+                TempData["updateSuccess"] = "Update Successful";
+                return RedirectToAction("Index", "User");
             }
             else
             {
-                if (!_user.AllowEdit(user))
-                {
-                    _user.EditUser(user);
-                    TempData["updateSuccess"] = "Change Successful";
-                    return RedirectToAction("ListUser", "User");
-                }
-                else
-                {
-                    _user.EditUser(user);
-                    TempData["updateSuccess"] = "Change Successful";
-                    return RedirectToAction("ListUser", "User");
-                }
-            };
-            
+                TempData["updateFailed"] = "Update Unsuccessful";
+                return RedirectToAction("Index", "User");
+            }
         }
 
         [HttpGet]
         public ActionResult GetUserToEdit(int userId)
         {
-            UserDTO user = _user.GetUserById(userId);
+            UserDTO user = _services.GetUserById(userId);
             return Json(user, JsonRequestBehavior.AllowGet);
         }
     }

@@ -1,0 +1,229 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <title>View</title>
+    <style>
+        label.error {
+            font-weight: 700;
+            font-size: 14px;
+            color: red;
+            display: block
+        }
+
+        sup {
+            color: darkorange;
+        }
+    </style>
+</head>
+<body>
+    <section class="bg-light py-3 py-md-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+                    <div class="card border border-light-subtle rounded-3 shadow-sm">
+                        <div class="card-body p-3 p-md-4 p-xl-5">
+                            <h2 class="fs-6 fw-normal text-center text-secondary mb-4">Enter your details to register</h2>
+                            <form action="/Register/UserRegister" method="post" id="registerValidator">
+                                <div class="row gy-2 overflow-hidden">
+                                    <div class="col-12">
+                                        <div class="mb-1">
+                                            <label for="firstName" class="form-label"><sup>*</sup>First Name:</label>
+                                            <input type="text" class="form-control" name="firstName" id="firstName">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-1">
+                                            <label for="lastName" class="form-label"><sup>*</sup>Last Name:</label>
+                                            <input type="text" class="form-control" name="lastName" id="lastName">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-1">
+                                            <label for="email" class="form-label"><sup>*</sup>Email:</label>
+                                            <input type="email" class="form-control" name="email" id="email">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-1">
+                                            <label for="phone" class="form-label"><sup>*</sup>Phone:</label>
+                                            <input type="text" class="form-control" name="phone" id="phone" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-1">
+                                            <label for="username" class="form-label"><sup>*</sup>Username:</label>
+                                            <input type="text" class="form-control" name="userName" id="username">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-1">
+                                            <label for="password" class="form-label"><sup>*</sup>Password:</label>
+                                            <input type="password" class="form-control" name="password" id="password" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-1">
+                                            <label for="confirm_password" class="form-label"><sup>*</sup>Confirm Password:</label>
+                                            <input type="password" class="form-control" name="confirm_password" id="confirm_password" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" name="iAgree" id="iAgree">
+                                            <label class="form-check-label text-secondary" for="iAgree">
+                                                I agree to the <a href="#!" class="link-primary text-decoration-none">terms and conditions</a>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-grid my-3">
+                                            <button class="btn btn-primary btn-lg" type="submit">Sign up</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <p class="m-0 text-secondary text-center">Already have an account? <a href="/Login/FormLogin" class="link-primary text-decoration-none">Sign in</a></p>
+                                    </div>
+                                    <div class="col-12">
+                                        <p class="m-0 text-secondary text-center">@ViewBag.Success</p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.validator.addMethod("RegexPassword", function (value, element) {
+            return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%^&*?])[a-zA-Z0-9!#$%^&*?]{8,}$/.test(value);
+        }, "Password at least 1 special char, digit and upper letter");
+
+
+
+        $.validator.addMethod(
+            "UpperFirstLetter", function (value, element) {
+                if (value.charAt(i) == value.charAt(i).toUpperCase()) {
+                    return value;
+                }
+            }, "First letter must be uppercase ");
+
+        $.validator.addMethod("ContainCharacter", function (value, element) {
+            const arrayChar = ["!", '$', '#', '%', '^', '&', '*'];
+            return arrayChar.some(char => value.includes(char));
+        }, "Password must be contains at least 1 speacial characters");
+
+        $.validator.addMethod("ContainNumber", function (value, element) {
+            for (var i = 0; i < value.length; i++) {
+                if (!isNaN(value[i])) {
+                    return value;
+                }
+            }
+        }, "Passowrd must be contains number");
+
+        $("#registerValidator").validate({
+            rules: {
+                first_name: {
+                    required: true,
+                    maxlength: 50
+                },
+                last_name: {
+                    required: true,
+                    maxlength: 50
+                },
+                user_name: {
+                    required: true,
+                    minlength: 8
+                },
+                password: {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 100,
+                    RegexPassword: true
+                },
+                confirm_password: {
+                    required: true,
+                    equalTo: password
+                },
+                phone: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 10
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    maxlength: 50
+                },
+                iAgree: {
+                    required: true
+                }
+            },
+            messages: {
+                first_name: {
+                    required: "Please enter your first name"
+                },
+                last_name: {
+                    required: "Please enter your last name"
+                },
+                user_name: {
+                    required: "Please enter your user name",
+                    minlength: "User name at least 8 character"
+                },
+                password: {
+                    required: "Please enter your password",
+                    minlength: "Password at least 8 character",
+                    maxlength: "Password over 100 characters",
+                    RegexPassword: "Password at least 1 special char, digit and upper letter"
+                },
+                confirm_password: {
+                    required: "Please enter your re-password",
+                    equalTo: "Not match password"
+                },
+                phone: {
+                    required: "Please enter your phone number",
+                    minlength: "Phone number at least 10 digits",
+                    maxlength: "Phone number can over 10 digits"
+                },
+                email: {
+                    required: "Please enter your email",
+                    email: "Email must be correct format example@domain.com",
+                    maxlength: "Email can not over 50 characters"
+                },
+                iAgree: {
+                    required: "Please click to agree"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    })
+
+    var dupplicateUser = '@TempData["Dupplicate"]';
+    if (dupplicateUser) {
+        Swal.fire({
+            position: "center",
+            icon: "error",
+            title: dupplicateUser,
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
+</script>

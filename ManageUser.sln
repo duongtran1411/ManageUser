@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL_User", "BLL_User\BLL_User.csproj", "{CDC82972-5682-4D36-8A30-99B1D710B0DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageUser.BLL", "BLL_User\ManageUser.BLL.csproj", "{CDC82972-5682-4D36-8A30-99B1D710B0DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PL_User", "PL_User\PL_User.csproj", "{D98433F0-A3D6-4BAB-9228-7DB862BF6C7E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageUser", "PL_User\ManageUser.csproj", "{D98433F0-A3D6-4BAB-9228-7DB862BF6C7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL_User", "DAL_User\DAL_User.csproj", "{7AF00C4C-DE0E-46B0-AEDC-B95043A9F40D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageUser.DAL", "DAL_User\ManageUser.DAL.csproj", "{7AF00C4C-DE0E-46B0-AEDC-B95043A9F40D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

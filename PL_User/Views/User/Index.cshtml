@@ -2,7 +2,7 @@
 @{
     Layout = null;
 }
-@using BLL_User.DTO
+@using BLL_User.Model
 <!DOCTYPE html>
 
 <html>
@@ -43,24 +43,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var o in ViewData["listUser"] as List<UserDTO>)
-                    {
-                        <tr>
-                            <td>@o.id</td>
-                            <td>@o.userName</td>
-                            <td>@o.firstName</td>
-                            <td>@o.lastName</td>
-                            <td>@o.email</td>
-                            <td>@o.phone</td>
-                            <td>@o.createdTime</td>
-                            <td class="d-flex">
-                                <button id="editUser" class="btn btn-success" onclick="EditUser(@o.id)">Edit</button>
-                                <button class="btn btn-danger" onclick="DeleteUser(@o.id)">Delete</button>
-                            </td>
-                        </tr>
-                    }
                 </tbody>
             </table>
+            <div class="col-4">
+                <a class="btn btn-light" href="/Home/Index">Back To Home</a>
+                <a class="btn btn-danger" href="/Login/UserLogout">Logout</a>
+            </div>
         </div>
     </div>
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -72,11 +60,11 @@
                         <div class="row pb-2">
                             <div class="col-6">
                                 <label class="form-label"><sup>*</sup>FirstName:</label>
-                                <input type="text" class="form-control" name="firstName" />
+                                <input type="text" class="form-control" name="first_name" />
                             </div>
                             <div class="col-6">
                                 <label class="form-label"><sup>*</sup>LastName:</label>
-                                <input type="text" class="form-control" name="lastName" />
+                                <input type="text" class="form-control" name="last_name" />
                             </div>
                         </div>
                         <div class="row">
@@ -92,7 +80,7 @@
 
                             <div class="col-12 pb-2">
                                 <label class="form-label"><sup>*</sup>UserName:</label>
-                                <input type="text" class="form-control" name="userName" />
+                                <input type="text" class="form-control" name="user_name" />
                             </div>
                             <div class="col-12 pb-2">
                                 <label class="form-label"><sup>*</sup>Password:</label>
@@ -121,11 +109,11 @@
                         <div class="row pb-2">
                             <div class="col-6">
                                 <label class="form-label"><sup>*</sup>FirstName:</label>
-                                <input type="text" class="form-control" name="firstName" id="editFirstName" />
+                                <input type="text" class="form-control" name="first_name" id="editFirstName" />
                             </div>
                             <div class="col-6">
                                 <label class="form-label"><sup>*</sup>LastName:</label>
-                                <input type="text" class="form-control" name="lastName" id="editLastName" />
+                                <input type="text" class="form-control" name="last_name" id="editLastName" />
                             </div>
                         </div>
                         <div class="row">
@@ -146,13 +134,13 @@
 
                             <div class="col-12 pb-2">
                                 <label class="form-label"><sup>*</sup>UserName:</label>
-                                <input type="text" class="form-control" name="userName" id="editUserName" />
+                                <input type="text" class="form-control" name="user_name" id="editUserName" />
                             </div>
                             <div class="col-12 pb-2">
                                 <label class="form-label"><sup>*</sup>Password:</label>
                                 <input type="password" class="form-control" name="password" id="editPassword" />
                             </div>
-                            
+
                             <div class="col-12 pt-3">
                                 <button class="btn btn-primary w-100" type="submit">Save User</button>
                             </div>
@@ -195,11 +183,11 @@
             },
             success: function (response) {
                 $('#editId').val(response.id);
-                $('#editFirstName').val(response.firstName);
-                $('#editLastName').val(response.lastName);
+                $('#editFirstName').val(response.first_name);
+                $('#editLastName').val(response.last_name);
                 $('#editEmail').val(response.email);
                 $('#editPhone').val(response.phone);
-                $('#editUserName').val(response.userName);
+                $('#editUserName').val(response.user_name);
                 $('#editPassword').val(response.password);
                 showModal();
             },
@@ -252,7 +240,35 @@
 
 <script>
     $(document).ready(function () {
-        $('#tableUser').DataTable();
+        $('#tableUser').DataTable({
+            "serverSide": true,
+            "processing": true,
+            "ajax": {
+                "url": "/User/ListUser",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columns":
+                [ 
+                    { "data": "id", "name": "STT", autoWidth: true },
+                    { "data": "user_name", "name": "UserName", autoWidth: true },
+                    { "data": "first_name", "name": "FirstName", autoWidth: true },
+                    { "data": "last_name", "name": "LastName", autoWidth: true },
+                    { "data": "email", "name": "Email", autoWidth: true },
+                    { "data": "phone", "name": "Phone", autoWidth: true },
+                    { "data": "created_time", "name": "CreatedTime", autoWidth: true },
+                    {
+                        "data": null, 
+                        "render": function (data, type, full, meta) {
+                            var actionButtons = '';
+                            actionButtons += '<button class="btn btn-success" onclick="EditUser(' + full.id + ')">Edit</button> ';
+                            actionButtons += '<button class="btn btn-danger" onclick="DeleteUser(' + full.id + ')">Delete</button>';
+                            return actionButtons;
+                        },
+                        "orderable": false 
+                    }
+                ]
+        });
     })
 </script>
 
@@ -265,23 +281,22 @@
 
         $("#formEdit").validate({
             rules: {
-                firstName: {
+                first_name: {
                     required: true,
                     maxlength: 50
                 },
-                lastName: {
+                last_name: {
                     required: true,
                     maxlength: 50
                 },
-                userName: {
+                user_name: {
                     required: true,
                     minlength: 8
                 },
                 password: {
                     required: true,
                     minlength: 8,
-                    maxlength: 100,
-                    RegexPassword: true
+                    maxlength: 100
                 },
                 confirm_password: {
                     required: true,
@@ -299,21 +314,20 @@
                 }
             },
             messages: {
-                firstName: {
+                first_name: {
                     required: "Please enter your first name"
                 },
-                lastName: {
+                last_name: {
                     required: "Please enter your last name"
                 },
-                userName: {
+                user_name: {
                     required: "Please enter your user name",
                     minlength: "User name at least 8 character"
                 },
                 password: {
                     required: "Please enter your password",
                     minlength: "Password at least 8 character",
-                    maxlength: "Password over 100 characters",
-                    RegexPassword: "Password at least 1 special char, digit and upper letter"
+                    maxlength: "Password over 100 characters"
                 },
                 confirm_password: {
                     required: "Please enter your re-password",
@@ -346,15 +360,15 @@
 
         $("#formUser").validate({
             rules: {
-                firstName: {
+                first_name: {
                     required: true,
                     maxlength: 50
                 },
-                lastName: {
+                last_name: {
                     required: true,
                     maxlength: 50
                 },
-                userName: {
+                user_name: {
                     required: true,
                     minlength: 8
                 },
@@ -380,13 +394,13 @@
                 }
             },
             messages: {
-                firstName: {
+                first_name: {
                     required: "Please enter your first name"
                 },
-                lastName: {
+                last_name: {
                     required: "Please enter your last name"
                 },
-                userName: {
+                user_name: {
                     required: "Please enter your user name",
                     minlength: "User name at least 8 character"
                 },

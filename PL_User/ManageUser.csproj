@@ -119,7 +119,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -175,11 +178,15 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\User\ListUser.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Login\FormLogin.cshtml" />
+    <Content Include="Views\Register\FormRegister.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Base\" />
+    <Folder Include="Views\Logout\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -209,9 +216,9 @@
     <Content Include="Scripts\jquery-3.7.0.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BLL_User\BLL_User.csproj">
+    <ProjectReference Include="..\BLL_User\ManageUser.BLL.csproj">
       <Project>{cdc82972-5682-4d36-8a30-99b1d710b0de}</Project>
-      <Name>BLL_User</Name>
+      <Name>ManageUser.BLL</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
