@@ -70,7 +70,7 @@ namespace PL_User.Controllers
             }
             else
             {
-                TempData["updateFailed"] = "Update Unsuccessful";
+                TempData["updateFailed"] = "Update Unsuccessful Or Unchanges";
                 return RedirectToAction("Index", "User");
             }
         }

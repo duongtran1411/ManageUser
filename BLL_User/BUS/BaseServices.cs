@@ -18,7 +18,6 @@ namespace BLL_User.BUS
             {
                 cfg.CreateMap<User, UserDTO>().ReverseMap();
             });
-
             Mapper = config.CreateMapper();
         }
 
@@ -50,7 +49,6 @@ namespace BLL_User.BUS
 
         public void Update(T entity)
         {
-            
             dbContext.Set<T>().Attach(entity);
             var entry = dbContext.Entry(entity);
             if (entry.CurrentValues != entry.OriginalValues)
@@ -62,7 +60,6 @@ namespace BLL_User.BUS
             {
                 dbContext.Entry(entity).State = EntityState.Unchanged;
             }
-
         }
 
     }

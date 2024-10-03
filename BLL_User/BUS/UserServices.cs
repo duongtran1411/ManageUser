@@ -49,7 +49,7 @@ namespace BLL_User.BUS
             var query = dbContext.Users.FirstOrDefault(u => u.user_name.Equals(input.user_name));
             if(query != null)
             {
-                if(query.id == input.id)
+                if(query.id == input.id && !input.user_name.Equals(query.user_name))
                 {
                     var user = Mapper.Map<UserDTO, User>(input);
                     user.password = SecurityExtension.EncryptMD5(input.password);
