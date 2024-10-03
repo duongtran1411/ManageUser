@@ -256,7 +256,18 @@
                     { "data": "last_name", "name": "LastName", autoWidth: true },
                     { "data": "email", "name": "Email", autoWidth: true },
                     { "data": "phone", "name": "Phone", autoWidth: true },
-                    { "data": "created_time", "name": "CreatedTime", autoWidth: true },
+                    {
+                        "data": "created_time", "name": "CreatedTime", autoWidth: true,
+                        "render": function (data, type, full, meta) {
+                            if (full.created_time) {
+                                var timestamp = full.created_time.match(/\d+/)[0];
+                                var myDate = new Date(parseInt(timestamp, 10));
+                                var options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+                                return myDate.toLocaleDateString('en-GB', options);
+                            }
+                            return ""; 
+                        }
+                    },
                     {
                         "data": null, 
                         "render": function (data, type, full, meta) {
@@ -269,6 +280,9 @@
                     }
                 ]
         });
+        function parseJsonDate(jsonDateString) {
+            return moment(jsonDateString).format("D-MMM-YY").toUpperCase();
+        }
     })
 </script>
 
