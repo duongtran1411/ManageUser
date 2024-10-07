@@ -51,7 +51,6 @@ namespace BLL_User.BUS
                     user.email = input.Email;
                     user.phone = input.Phone;   
                     user.password = SecurityExtension.EncryptMD5(input.Password);
-                    user.created_time = input.CreatedTime;
                     Update(user);
                     isUpdated = true;
                     return isUpdated;

@@ -9,7 +9,7 @@ namespace BLL_User.BUS
 {
     public class BaseServices<T> where T : class
     {
-        public AssignmentEntities2 dbContext = new AssignmentEntities2();
+        private AssignmentEntities2 dbContext = new AssignmentEntities2();
         public IMapper Mapper;
         public BaseServices()
         {
@@ -54,7 +54,6 @@ namespace BLL_User.BUS
             dbContext.SaveChanges();
 
         }
-
 
         public T FirstOrDeFault(Expression<Func<T, bool>> query)
         {

@@ -163,9 +163,7 @@
         function hideModal() {
             var myModal = document.getElementById('inforUserDetail');
             var modalInstance = bootstrap.Modal.getInstance(myModal);
-            if (!modalInstance) {
-                modalInstance = new bootstrap.Modal(myModal);
-            }
+            
             modalInstance.hide();
         }
         document.getElementById('closeEdit').addEventListener('click', hideModal);
@@ -241,6 +239,8 @@
             $('#tableUser').DataTable({
                 "serverSide": true,
                 "processing": true,
+                "aLengthMenu":false,
+                "iDisplayLength": 8,
                 "language": {
                     searchPlaceholder: "Tìm kiếm theo username",
 
@@ -290,6 +290,9 @@
             function parseJsonDate(jsonDateString) {
                 return moment(jsonDateString).format("D-MMM-YY").toUpperCase();
             }
+
+            $('#dt-length-0').css('display', 'none');
+            $('.dt-length label').css('display', 'none');
         })
     </script>
 
