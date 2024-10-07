@@ -1,6 +1,5 @@
 ﻿using BLL_User.BUS;
 using BLL_User.Model;
-using System.Diagnostics;
 using System.Web.Mvc;
 
 namespace PL_User.Controllers
@@ -19,16 +18,22 @@ namespace PL_User.Controllers
         public ActionResult UserLogin(LoginDTO loginDto)
         {
             var result = _services.GetUserByUserNameAndPassword(loginDto);
-
-            if (result != null)
+            if(ModelState.IsValid)
             {
-                Session["userName"] = result.user_name;
-                TempData["loginSuccess"] = "Login Successful";
-                return RedirectToAction("Index", "Home");
+                if (result != null)
+                {
+                    Session["userName"] = result.UserName;
+                    TempData["loginSuccess"] = "Login Successful";
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    TempData["loginFailed"] = "Username or password incorrect";
+                    return RedirectToAction("FormLogin", "Login");
+                }
             }
             else
             {
-                TempData["loginFailed"] = "Username or password incorrect";
                 return RedirectToAction("FormLogin", "Login");
             }
         }

@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using BLL_User.BUS;
 using BLL_User.Model;
-using Newtonsoft.Json.Linq;
 
 namespace PL_User.Controllers
 {
@@ -27,11 +24,10 @@ namespace PL_User.Controllers
                 var skip = Convert.ToInt32(Request.Form.GetValues("start").FirstOrDefault());
                 var take = Convert.ToInt32(Request.Form.GetValues("length").FirstOrDefault());
                 var searchText = Request.Form.GetValues("search[value]").FirstOrDefault();
-                Debug.WriteLine($"draw:{draw} skip: {skip} take: {take} text:{searchText}");
                 var totalRecord = 0;
                 var listUser = _services.GetUserByPaging(new FilterDTO { SkipCount = skip, PageCount = take, FilterSearch = searchText }, out totalRecord);
                 
-                return Json(new { draw = draw, recordsFiltered = totalRecord, recordsTotal = totalRecord, data = listUser });
+                return Json(new { draw, recordsFiltered = totalRecord, recordsTotal = totalRecord, data = listUser });
             }
             catch (Exception)
             {

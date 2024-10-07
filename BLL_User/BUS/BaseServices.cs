@@ -2,7 +2,6 @@
 using System.Data.Entity;
 using DAL_User;
 using AutoMapper;
-using BLL_User.Model;
 using System;
 using System.Linq.Expressions;
 
@@ -16,12 +15,12 @@ namespace BLL_User.BUS
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<User, UserDTO>().ReverseMap();
+                cfg.AddProfile<UserProfile>();
             });
             Mapper = config.CreateMapper();
         }
 
-        public IQueryable<T> GetAllList(Expression<Func<T,bool>> query)
+        public IQueryable<T> GetAllList(Expression<Func<T, bool>> query)
         {
             return dbContext.Set<T>().Where(query);
         }
@@ -51,15 +50,15 @@ namespace BLL_User.BUS
         {
             dbContext.Set<T>().Attach(entity);
             var entry = dbContext.Entry(entity);
-            if (entry.CurrentValues != entry.OriginalValues)
-            {
-                dbContext.Entry(entity).State = EntityState.Modified;
-                dbContext.SaveChanges();
-            }
-            else
-            {
-                dbContext.Entry(entity).State = EntityState.Unchanged;
-            }
+            dbContext.Entry(entity).State = EntityState.Modified;
+            dbContext.SaveChanges();
+
+        }
+
+
+        public T FirstOrDeFault(Expression<Func<T, bool>> query)
+        {
+            return dbContext.Set<T>().FirstOrDefault(query);
         }
 
     }
