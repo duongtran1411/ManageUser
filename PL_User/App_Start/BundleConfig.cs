@@ -24,6 +24,14 @@ namespace PL_User
                 "~/Content/site.css"
             ));
 
+            bundles.Add(new StyleBundle("~/ManageUser/css").Include(
+                "~/Content/ManageUser.css"
+            ));
+
+            bundles.Add(new StyleBundle("~/ChangePass/css").Include(
+                "~/Content/ChangePassword.css"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/loadApp").Include(
                "~/Scripts/app.js"
             ));

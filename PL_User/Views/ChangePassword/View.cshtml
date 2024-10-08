@@ -1,0 +1,105 @@
+﻿@model BLL_User.Model.UserDTO
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/ChangePass/css")
+<h2>User Name : @Model.UserName</h2>
+<div class="row">
+    <div class="col-4">
+        <form action="/ChangePassword/ChangePass" method="post" id="formChangePassword">
+            <input type="hidden" value="@Model.Id" name="UserId"/>
+            <div class="col-12">
+                <label class="form-label"><sup>*</sup>Your Password:</label>
+                <input class="form-control mb-2" type="password" name="password" tabindex="1"/>
+            </div>
+            <div class="col-12">
+                <label class="form-label"><sup>*</sup>New Password:</label>
+                <input class="form-control mb-2" type="password" name="newPassword" id="newPass" tabindex="2" />
+            </div>
+            <div class="col-12">
+                <label class="form-label"><sup>*</sup>Confirm Password:</label>
+                <input class="form-control mb-2" type="password" name="confirmPassword" tabindex="3"/>
+            </div>
+            <button class="btn btn-success" type="submit">Save Changes</button>
+            <a class="btn btn-danger" href="/Login/UserLogout">Logout</a>
+        </form>
+    </div>
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $.validator.addMethod("RegexPassword", function (value, element) {
+                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%^&*?])[a-zA-Z0-9!#$%^&*?]{8,}$/.test(value);
+            }, "Password at least 1 special char, digit and upper letter");
+            $('#formChangePassword').validate({
+                rules: {
+                    password: {
+                        required: true,
+                        minlength: 8,
+                        maxlength: 100
+                    },
+                    newPassword: {
+                        required: true,
+                        minlength: 8,
+                        maxlength: 100,
+                        RegexPassword: true
+                    },
+                    confirmPassword: {
+                        required: true,
+                        equalTo: "#newPass"
+                    }
+                },
+                messages: {
+                    password: {
+                        required: "Please enter your password",
+                        minlength: "Password at least 8 character",
+                        maxlength: "Password over 100 characters"
+                    },
+                    newPassword: {
+                        required: "Please enter your new password",
+                        minlength: "Password at least 8 character",
+                        maxlength: "Password over 100 characters",
+                        RegexPassword: "Password at least 1 special char, digit and upper letter"
+                    },
+                    confirmPassword: {
+                        required: "Please enter confirm password",
+                        equalTo: "Not match new password"
+
+                    }
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            })
+        })
+    </script>
+    
+    <script>
+        const changeSuccess ='@TempData["ChangeSuccess"]';
+        console.log(changeSuccess);
+        if (changeSuccess) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: changeSuccess,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+
+        const changeFailed = '@TempData["ChangeFailed"]';
+        console.log(changeFailed);
+        if (changeFailed) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: changeFailed,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    </script>
+}
+

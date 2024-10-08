@@ -50,7 +50,6 @@ namespace BLL_User.BUS
                     user.last_name = input.LastName;
                     user.email = input.Email;
                     user.phone = input.Phone;   
-                    user.password = SecurityExtension.EncryptMD5(input.Password);
                     Update(user);
                     isUpdated = true;
                     return isUpdated;
@@ -64,7 +63,6 @@ namespace BLL_User.BUS
             {
                 return isUpdated;
             }
-            
         }
 
         public void DeleteUserById(int id, string message)
@@ -84,7 +82,8 @@ namespace BLL_User.BUS
 
         public UserDTO GetUserByUserNameAndPassword(LoginDTO loginDto)
         {
-            var user = FirstOrDeFault(u => u.user_name.Equals(loginDto.UserName) && u.password.Equals(loginDto.Password));
+            var password = SecurityExtension.EncryptMD5(loginDto.Password);
+            var user = FirstOrDeFault(u => u.user_name.Equals(loginDto.UserName) && u.password.Equals(password));
             if (user == null)
             {
                 return null;
@@ -97,6 +96,32 @@ namespace BLL_User.BUS
             var user = FirstOrDeFault(u => u.id == id);
             if (user == null) return null;
             return Mapper.Map<User, UserDTO>(user);
+        }
+
+        public bool ChangePassword(ChangePassDto input, out string errorMessage)
+        {
+            errorMessage = "";
+            var user = FirstOrDeFault(u => u.id == input.UserId );
+            if(user != null)
+            {
+                var password = SecurityExtension.EncryptMD5(input.Password);
+                if (user.password.Equals(password))
+                {
+                    user.password = SecurityExtension.EncryptMD5(input.NewPassword);
+                    Update(user);
+                    return true;
+                }
+                else
+                {
+                    errorMessage = "Current password is incorrect";
+                    return false;
+                }
+            }
+            else
+            {
+                errorMessage = "User is not existed or deleted";
+                return false;
+            }
         }
     }
 }

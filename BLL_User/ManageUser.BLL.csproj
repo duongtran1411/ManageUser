@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BUS\BaseServices.cs" />
+    <Compile Include="Model\ChangePassDto.cs" />
     <Compile Include="Profile\UserProfile.cs" />
     <Compile Include="BUS\UserServices.cs" />
     <Compile Include="Extension\SecurityExtension.cs" />

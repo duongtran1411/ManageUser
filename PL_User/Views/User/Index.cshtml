@@ -1,24 +1,14 @@
-﻿
+﻿@model BLL_User.Model.UserDTO
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using BLL_User.Model
+@Styles.Render("~/ManageUser/css")
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>ListUser</title>
-    <style>
-        .error {
-            font-weight: 600;
-            color: red
-        }
-
-        sup {
-            color: orangered
-        }
-    </style>
 </head>
 <body>
     <h1 class="text-center">Manage User</h1>
@@ -38,6 +28,7 @@
                         <th>Phone</th>
                         <th>Created Time</th>
                         <th>Action</th>
+                        <th>Change Password</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,39 +39,39 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="loginModalLabel" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content p-4">
                 <div class="d-flex justify-content-end">
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-0">
-                    <form action="/User/AddUser" method="post" id="formUser">
+                    <form method="post" id="formUser">
                         <h3 class="text-center">ADD USER</h3>
                         <div class="row pb-2">
                             <div class="col-6">
                                 <label class="form-label"><sup>*</sup>FirstName:</label>
-                                <input type="text" class="form-control" name="FirstName" />
+                                <input type="text" class="form-control" name="FirstName" id="addFirstName" />
                             </div>
                             <div class="col-6">
                                 <label class="form-label"><sup>*</sup>LastName:</label>
-                                <input type="text" class="form-control" name="LastName" />
+                                <input type="text" class="form-control" name="LastName" id="addLastName" />
                             </div>
                         </div>
-                        <div class="row">                           
+                        <div class="row">
                             <div class="col-12 pb-2">
                                 <label class="form-label"><sup>*</sup>Email:</label>
-                                <input type="email" class="form-control" name="Email" />
+                                <input type="email" class="form-control" name="Email" id="addEmail" />
                             </div>
 
                             <div class="col-12 pb-2">
                                 <label class="form-label"><sup>*</sup>Phone:</label>
-                                <input type="text" class="form-control" name="Phone" />
+                                <input type="text" class="form-control" name="Phone" id="addPhone" />
                             </div>
 
                             <div class="col-12 pb-2">
                                 <label class="form-label"><sup>*</sup>UserName:</label>
-                                <input type="text" class="form-control" name="UserName" />
+                                <input type="text" class="form-control" name="UserName" id="addUserName" />
                             </div>
                             <div class="col-12 pb-2">
                                 <label class="form-label"><sup>*</sup>Password:</label>
@@ -90,9 +81,9 @@
                                 <label class="form-label"><sup>*</sup>Confirm Password:</label>
                                 <input type="password" class="form-control" name="confirm_password" />
                             </div>
-                            <div class="col-12 pt-3">
-                                <button class="btn btn-primary w-100" type="submit">Add User</button>
-                            </div>
+                        </div>
+                        <div class="pt-3 d-flex justify-content-end">
+                            <button class="btn btn-primary w-25">Add User</button>
                         </div>
                     </form>
                 </div>
@@ -100,7 +91,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="inforUserDetail" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal fade" id="inforUserDetail" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content p-4">
                 <div class="d-flex justify-content-end">
@@ -135,9 +126,9 @@
                                 <input type="text" class="form-control" name="UserName" id="editUserName" readonly />
                             </div>
                             <input type="hidden" class="form-control" name="Password" id="editPassword" />
-                            <div class="col-3 pt-3">
-                                <button class="btn btn-primary w-100" type="submit">Save User</button>
-                            </div>
+                        </div>
+                        <div class="pt-3 d-flex justify-content-end">
+                            <button class="btn btn-primary w-25" type="submit">Save User</button>
                         </div>
                     </form>
                 </div>
@@ -163,12 +154,14 @@
         function hideModal() {
             var myModal = document.getElementById('inforUserDetail');
             var modalInstance = bootstrap.Modal.getInstance(myModal);
-            
+
             modalInstance.hide();
         }
         document.getElementById('closeEdit').addEventListener('click', hideModal);
     </script>
-    
+    <script>
+
+    </script>
     <script>
         function EditUser(id) {
             $.ajax({
@@ -239,8 +232,9 @@
             $('#tableUser').DataTable({
                 "serverSide": true,
                 "processing": true,
-                "aLengthMenu":false,
+                "aLengthMenu": false,
                 "iDisplayLength": 8,
+                scrollX: true,
                 "language": {
                     searchPlaceholder: "Tìm kiếm theo username",
 
@@ -256,7 +250,13 @@
                 },
                 "columns":
                     [
-                        { "data": "Id", "name": "STT", autoWidth: true },
+                        {
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            },
+                            "name": "STT", autoWidth: true,
+                        },
                         { "data": "UserName", "name": "UserName", autoWidth: true },
                         { "data": "FirstName", "name": "FirstName", autoWidth: true },
                         { "data": "LastName", "name": "LastName", autoWidth: true },
@@ -283,6 +283,15 @@
                                 return actionButtons;
                             },
                             "orderable": false
+                        },
+                        {
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                var actionButtons = '';
+                                actionButtons += '<a class="btn btn-info w-100 text-white" href="/ChangePassword/View/' + full.Id + '">Change</a> ';
+                                return actionButtons;
+                            },
+                            "orderable": false
                         }
                     ]
             });
@@ -303,7 +312,7 @@
             }, "Password at least 1 special char, digit and upper letter");
 
 
-            $("#formEdit").validate({
+            $("#formUser").validate({
                 rules: {
                     FirstName: {
                         required: true,
@@ -369,7 +378,8 @@
                     }
                 },
                 submitHandler: function (form) {
-                    form.submit();
+                    AddUser();
+                    return false;
                 }
             });
         });
@@ -450,10 +460,64 @@
                     }
                 },
                 submitHandler: function (form) {
-                    form.submit();
+                    form.preventDefault();
                 }
             });
         });
+        $(document).ready(function () {
+            $('#formUser').on('submit', function (e) {
+                e.preventDefault();
+                
+            })
+        })
+        
+        function AddUser() {
+            const formData = {
+                FirstName: $('#addFirstName').val(),
+                LastName: $('#addLastName').val(),
+                Email: $('#addEmail').val(),
+                Phone: $('#addPhone').val(),
+                UserName: $('#addUserName').val(),
+                Password: $('#password').val()
+            };
+            $.ajax({
+                url: "/User/AddUser",
+                type: "post",
+                contentType: "application/json",
+                data: JSON.stringify(formData),
+                success: function (response) {
+                    if (response.success == true) {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                        var myModal = document.getElementById('exampleModal');
+                        var modalInstance = bootstrap.Modal.getInstance(myModal);
+                        modalInstance.hide();
+                        setTimeout(() => {
+                            window.location.href('/User/ListUser');
+                        } , 2000);
+                        
+                    }
+                    if (response.success == false) {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "error",
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    }
+                    console.log(response.success);
+                },
+                error: function (xhr) {
+                    console.log(xhr)
+                }
+            });
+        }
     </script>
 
 
@@ -491,17 +555,7 @@
         });
     }
 
-    const resultAddFailed = '@TempData["AddFailed"]';
-
-    if (resultAddFailed) {
-        Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: resultAddFailed,
-            showConfirmButton: false,
-            timer: 1500
-        });
-    }
+    
 
 
     </script>

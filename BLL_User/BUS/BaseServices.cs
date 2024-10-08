@@ -24,20 +24,11 @@ namespace BLL_User.BUS
         {
             return dbContext.Set<T>().Where(query);
         }
-        public IQueryable<T> GetAll()
-        {
-            return dbContext.Set<T>();
-        }
 
         public void Insert(T entity)
         {
             dbContext.Set<T>().Add(entity);
             dbContext.SaveChanges();
-        }
-
-        public T GetById()
-        {
-            return dbContext.Set<T>().Find();
         }
 
         public void Delete(T entity)

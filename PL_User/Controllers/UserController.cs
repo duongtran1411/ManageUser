@@ -38,15 +38,16 @@ namespace PL_User.Controllers
         [HttpPost]
         public ActionResult AddUser(UserDTO userDTO)
         {
+            var message = "";
             if (_services.CreateUser(userDTO))
             {
-                TempData["AddSuccess"] = "Add Successful";
-                return RedirectToAction("Index", "User");
+                message = "Add Successful";
+                return Json(new {success = true , message});
             }
             else
             {
-                TempData["AddFailed"] = "Username is existed";
-                return RedirectToAction("Index", "User");
+                message = "UserName is existed";
+                return Json(new { success = false, message });
             }
         }
 
@@ -77,5 +78,6 @@ namespace PL_User.Controllers
             UserDTO user = _services.GetUserById(userId);
             return Json(user, JsonRequestBehavior.AllowGet);
         }
+
     }
 }
