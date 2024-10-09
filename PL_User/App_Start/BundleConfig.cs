@@ -19,9 +19,12 @@ namespace PL_User
                         "~/Scripts/modernizr-*"));           
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                "~/Content/bootstrap.min.css",
+                "~/Content/bootstrap.min.css"
+            ));
+
+            bundles.Add(new StyleBundle("~/Datatable/css").Include(
                 "~/Content/dataTables.dataTables.css",
-                "~/Content/site.css"
+                 "~/Content/site.css"
             ));
 
             bundles.Add(new StyleBundle("~/ManageUser/css").Include(

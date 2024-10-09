@@ -15,7 +15,7 @@ namespace PL_User.Controllers
         {
             return View();
         }
-        
+
         public ActionResult ListUser()
         {
             try
@@ -26,28 +26,37 @@ namespace PL_User.Controllers
                 var searchText = Request.Form.GetValues("search[value]").FirstOrDefault();
                 var totalRecord = 0;
                 var listUser = _services.GetUserByPaging(new FilterDTO { SkipCount = skip, PageCount = take, FilterSearch = searchText }, out totalRecord);
-                
+
                 return Json(new { draw, recordsFiltered = totalRecord, recordsTotal = totalRecord, data = listUser });
             }
             catch (Exception)
             {
-                return Json(new { recordsFiltered = 0, recordsTotal = 0, data = new List<UserDTO>()});
+                return Json(new { recordsFiltered = 0, recordsTotal = 0, data = new List<UserDTO>() });
             }
         }
 
         [HttpPost]
         public ActionResult AddUser(UserDTO userDTO)
         {
-            var message = "";
-            if (_services.CreateOrEdit(userDTO, out message))
+            if (ModelState.IsValid)
             {
-                message = "Add Successful";
-                return Json(new {success = true , message});
+                var message = "";
+                if (_services.CreateOrEdit(userDTO, out message))
+                {
+                    message = "Add Successful";
+                    return Json(new { success = true, message });
+                }
+                else
+                {
+                    return Json(new { success = false, message });
+                }
             }
             else
             {
-                return Json(new { success = false, message });
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToArray();
+                return Json(new { success = false, message = string.Join(", ", errors) });
             }
+
         }
 
 
@@ -55,36 +64,47 @@ namespace PL_User.Controllers
         public ActionResult DeleteUser(int userId)
         {
             var message = "";
-            if(_services.DeleteUserById(userId, out message))
+            if (_services.DeleteUserById(userId, out message))
             {
-                return Json(new {success = true , message}, JsonRequestBehavior.AllowGet);
+                return Json(new { success = true, message }, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 return Json(new { success = false, message }, JsonRequestBehavior.AllowGet);
             }
+
         }
 
         [HttpPost]
         public ActionResult EditUser(UserDTO user)
         {
-            var errorMessage = "";
-            if (_services.CreateOrEdit(user, out errorMessage))
+            if (ModelState.IsValid)
             {
-                TempData["updateSuccess"] = "Update Successful or Unchanges";
-                return RedirectToAction("Index", "User");
+                var errorMessage = "";
+                if (_services.CreateOrEdit(user, out errorMessage))
+                {
+                    TempData["updateSuccess"] = "Update Successful or Unchanges";
+                    return RedirectToAction("Index", "User");
+                }
+                else
+                {
+                    TempData["updateFailed"] = errorMessage;
+                    return RedirectToAction("Index", "User");
+                }
             }
             else
             {
-                TempData["updateFailed"] = errorMessage;
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToArray();
+                TempData["updateFailed"] = string.Join(", ", errors);
                 return RedirectToAction("Index", "User");
             }
+
         }
 
         [HttpGet]
         public ActionResult GetUserToEdit(int userId)
         {
-            if(userId != 0)
+            if (userId != 0)
             {
                 UserDTO user = _services.GetUserById(userId);
                 return Json(user, JsonRequestBehavior.AllowGet);
@@ -92,9 +112,9 @@ namespace PL_User.Controllers
             else
             {
                 TempData["errorMessage"] = "User not existed or deleted";
-                return RedirectToAction("ListUser", "User");
+                return RedirectToAction("ListUser", "User", JsonRequestBehavior.AllowGet);
             }
-            
+
         }
 
     }

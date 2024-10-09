@@ -9,10 +9,10 @@
 <div class="row">
     <div class="col-4">
         <form action="/ChangePassword/ChangePass" method="post" id="formChangePassword">
-            <input type="hidden" value="@Model.Id" name="UserId"/>
+            <input type="hidden" value="@Model.Id" name="UserId" />
             <div class="col-12">
                 <label class="form-label"><sup>*</sup>Your Password:</label>
-                <input class="form-control mb-2" type="password" name="password" tabindex="1"/>
+                <input class="form-control mb-2" type="password" name="password" tabindex="1" />
             </div>
             <div class="col-12">
                 <label class="form-label"><sup>*</sup>New Password:</label>
@@ -20,10 +20,9 @@
             </div>
             <div class="col-12">
                 <label class="form-label"><sup>*</sup>Confirm Password:</label>
-                <input class="form-control mb-2" type="password" name="confirmPassword" tabindex="3"/>
+                <input class="form-control mb-2" type="password" name="confirmPassword" tabindex="3" />
             </div>
             <button class="btn btn-success" type="submit">Save Changes</button>
-            <a class="btn btn-danger" href="/Login/UserLogout">Logout</a>
         </form>
     </div>
 </div>
@@ -74,32 +73,30 @@
                 }
             })
         })
-    </script>
-    
-    <script>
-        const changeSuccess ='@TempData["ChangeSuccess"]';
-        console.log(changeSuccess);
-        if (changeSuccess) {
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: changeSuccess,
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }
 
-        const changeFailed = '@TempData["ChangeFailed"]';
-        console.log(changeFailed);
-        if (changeFailed) {
-            Swal.fire({
-                position: "top-end",
-                icon: "error",
-                title: changeFailed,
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }
+            const changeSuccess ='@TempData["ChangeSuccess"]';
+            if (changeSuccess) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: changeSuccess,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+
+            const changeFailed = '@TempData["ChangeFailed"]';
+            if (changeFailed) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: changeFailed,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
     </script>
+
+
 }
 

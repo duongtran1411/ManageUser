@@ -3,15 +3,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @Styles.Render("~/ManageUser/css")
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>ListUser</title>
-</head>
-<body>
-    <h1 class="text-center">Manage User</h1>
+@Styles.Render("~/Datatable/css")
+<h1 class="text-center">Manage User</h1>
     <div class="container">
         <div class="row">
             <div class="col-2">
@@ -28,15 +21,11 @@
                         <th>Phone</th>
                         <th>Created Time</th>
                         <th>Action</th>
-                        <th>Change Password</th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
             </table>
-            <div class="col-4">
-                <a class="btn btn-danger" href="/Login/UserLogout">Logout</a>
-            </div>
         </div>
     </div>
     <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="loginModalLabel" data-bs-backdrop="static">
@@ -135,8 +124,6 @@
             </div>
         </div>
     </div>
-</body>
-</html>
 @section scripts {
     <script>
         function showModalAdd() {
@@ -158,11 +145,7 @@
             modalInstance.hide();
         }
         document.getElementById('closeEdit').addEventListener('click', hideModal);
-    </script>
-    <script>
 
-    </script>
-    <script>
         function EditUser(id) {
             $.ajax({
                 url: "/User/GetUserToEdit",
@@ -187,10 +170,6 @@
             });
         };
 
-
-    </script>
-
-    <script>
         function DeleteUser(id) {
             Swal.fire({
                 title: "Are you sure?",
@@ -227,10 +206,10 @@
                                     text: response.errorMessage,
                                     icon: "error",
                                     timer: 3000
-                                });  
+                                });
                             }
-                           
-                            
+
+
                         },
                         error: function (xhr) {
                             console.log(xhr)
@@ -238,16 +217,16 @@
                     })
                 }
             });
-        }
-    </script>
+        };
 
-    <script>
         $(document).ready(function () {
             $('#tableUser').DataTable({
                 "serverSide": true,
                 "processing": true,
-                "aLengthMenu": false,
-                "iDisplayLength": 8,
+                "lengthMenu": [
+                    [10, 20, 30],
+                    [10, 20, 30]
+                ],
                 scrollX: true,
                 "language": {
                     searchPlaceholder: "Tìm kiếm theo username",
@@ -294,39 +273,99 @@
                                 var actionButtons = '';
                                 actionButtons += '<button class="btn btn-success" onclick="EditUser(' + full.Id + ')">Edit</button> ';
                                 actionButtons += '<button class="btn btn-danger" onclick="DeleteUser(' + full.Id + ')">Delete</button>';
-                                return actionButtons;
-                            },
-                            "orderable": false
-                        },
-                        {
-                            "data": null,
-                            "render": function (data, type, full, meta) {
-                                var actionButtons = '';
-                                actionButtons += '<a class="btn btn-info w-100 text-white" href="/ChangePassword/View/' + full.Id + '">Change</a> ';
+                                actionButtons += '<a class="mx-1 btn btn-info text-white" href="/ChangePassword/View/' + full.Id + '">Change</a> ';
                                 return actionButtons;
                             },
                             "orderable": false
                         }
                     ]
             });
+
             $('#dt-search-0').css('width', '220px')
             function parseJsonDate(jsonDateString) {
                 return moment(jsonDateString).format("D-MMM-YY").toUpperCase();
             }
 
-            $('#dt-length-0').css('display', 'none');
-            $('.dt-length label').css('display', 'none');
-        })
-    </script>
-
-    <script>
-        $(document).ready(function () {
             $.validator.addMethod("RegexPassword", function (value, element) {
                 return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%^&*?])[a-zA-Z0-9!#$%^&*?]{8,}$/.test(value);
             }, "Password at least 1 special char, digit and upper letter");
 
 
             $("#formUser").validate({
+                rules: {
+                    FirstName: {
+                        required: true,
+                        maxlength: 50
+                    },
+                    LastName: {
+                        required: true,
+                        maxlength: 50
+                    },
+                    UserName: {
+                        required: true,
+                        minlength: 8
+                    },
+                    Password: {
+                        required: true,
+                        minlength: 8,
+                        maxlength: 100,
+                        RegexPassword: true
+                    },
+                    confirm_password: {
+                        required: true,
+                        equalTo: password
+                    },
+                    Phone: {
+                        required: true,
+                        minlength: 10,
+                        maxlength: 10
+                    },
+                    Email: {
+                        required: true,
+                        email: true,
+                        maxlength: 50
+                    }
+                },
+                messages: {
+                    FirstName: {
+                        required: "Please enter your first name"
+                    },
+                    LastName: {
+                        required: "Please enter your last name"
+                    },
+                    UserName: {
+                        required: "Please enter your user name",
+                        minlength: "User name at least 8 character"
+                    },
+                    Password: {
+                        required: "Please enter your password",
+                        minlength: "Password at least 8 character",
+                        maxlength: "Password over 100 characters",
+                        RegexPassword:"Password at least 1 special char, digit and upper letter"
+                    },
+                    confirm_password: {
+                        required: "Please enter your re-password",
+                        equalTo: "Not match password"
+                    },
+                    Phone: {
+                        required: "Please enter your phone number",
+                        minlength: "Phone number at least 10 digits",
+                        maxlength: "Phone number can over 10 digits"
+                    },
+                    Email: {
+                        required: "Please enter your email",
+                        email: "Email must be correct format example@domain.com",
+                        maxlength: "Email can not over 50 characters"
+                    }
+                },
+                submitHandler: function (form) {
+                    AddUser();
+                    return false;
+                }
+            });
+
+
+            $("#formEdit").validate({
                 rules: {
                     FirstName: {
                         required: true,
@@ -392,185 +431,91 @@
                     }
                 },
                 submitHandler: function (form) {
-                    AddUser();
-                    return false;
-                }
-            });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $.validator.addMethod("RegexPassword", function (value, element) {
-                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%^&*?])[a-zA-Z0-9!#$%^&*?]{8,}$/.test(value);
-            }, "Password at least 1 special char, digit and upper letter");
-
-
-            $("#formUser").validate({
-                rules: {
-                    FirstName: {
-                        required: true,
-                        maxlength: 50
-                    },
-                    LastName: {
-                        required: true,
-                        maxlength: 50
-                    },
-                    UserName: {
-                        required: true,
-                        minlength: 8
-                    },
-                    Password: {
-                        required: true,
-                        minlength: 8,
-                        maxlength: 100,
-                        RegexPassword: true
-                    },
-                    confirm_password: {
-                        required: true,
-                        equalTo: password
-                    },
-                    Phone: {
-                        required: true,
-                        minlength: 10,
-                        maxlength: 10
-                    },
-                    Email: {
-                        required: true,
-                        email: true,
-                        maxlength: 50
-                    }
-                },
-                messages: {
-                    FirstName: {
-                        required: "Please enter your first name"
-                    },
-                    LastName: {
-                        required: "Please enter your last name"
-                    },
-                    UserName: {
-                        required: "Please enter your user name",
-                        minlength: "User name at least 8 character"
-                    },
-                    Password: {
-                        required: "Please enter your password",
-                        minlength: "Password at least 8 character",
-                        maxlength: "Password over 100 characters",
-                        RegexPassword: "Password at least 1 special char, digit and upper letter"
-                    },
-                    confirm_password: {
-                        required: "Please enter your re-password",
-                        equalTo: "Not match password"
-                    },
-                    Phone: {
-                        required: "Please enter your phone number",
-                        minlength: "Phone number at least 10 digits",
-                        maxlength: "Phone number can over 10 digits"
-                    },
-                    Email: {
-                        required: "Please enter your email",
-                        email: "Email must be correct format example@domain.com",
-                        maxlength: "Email can not over 50 characters"
-                    }
-                },
-                submitHandler: function (form) {
                     form.preventDefault();
                 }
             });
-        });
-        $(document).ready(function () {
-            $('#formUser').on('submit', function (e) {
-                e.preventDefault();
-                
-            })
-        })
-        
-        function AddUser() {
-            const formData = {
-                FirstName: $('#addFirstName').val(),
-                LastName: $('#addLastName').val(),
-                Email: $('#addEmail').val(),
-                Phone: $('#addPhone').val(),
-                UserName: $('#addUserName').val(),
-                Password: $('#password').val()
-            };
-            $.ajax({
-                url: "/User/AddUser",
-                type: "post",
-                contentType: "application/json",
-                data: JSON.stringify(formData),
-                success: function (response) {
-                    if (response.success == true) {
-                        Swal.fire({
-                            position: "top-end",
-                            icon: "success",
-                            title: response.message,
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                        var myModal = document.getElementById('exampleModal');
-                        var modalInstance = bootstrap.Modal.getInstance(myModal);
-                        modalInstance.hide();
-                        setTimeout(() => {
-                            window.location.href('/User/ListUser');
-                        } , 2000);
-                        
+
+            function AddUser() {
+                const formData = {
+                    FirstName: $('#addFirstName').val(),
+                    LastName: $('#addLastName').val(),
+                    Email: $('#addEmail').val(),
+                    Phone: $('#addPhone').val(),
+                    UserName: $('#addUserName').val(),
+                    Password: $('#password').val()
+                };
+                $.ajax({
+                    url: "/User/AddUser",
+                    type: "post",
+                    contentType: "application/json",
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        if (response.success == true) {
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: response.message,
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                            var myModal = document.getElementById('exampleModal');
+                            var modalInstance = bootstrap.Modal.getInstance(myModal);
+                            modalInstance.hide();
+                            setTimeout(() => {
+                                window.location.href('/User/ListUser');
+                            }, 2000);
+
+                        }
+                        if (response.success == false) {
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "error",
+                                title: response.message,
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                        }
+                        console.log(response.success);
+                    },
+                    error: function (xhr) {
+                        console.log(xhr)
                     }
-                    if (response.success == false) {
-                        Swal.fire({
-                            position: "top-end",
-                            icon: "error",
-                            title: response.message,
-                            showConfirmButton: false,
-                            timer: 3000
+                });
+            }
+
+                const result = '@TempData["updateSuccess"]';
+                if (result) {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: result,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                 }
+
+                const resultFailed = '@TempData["updateFailed"]';
+                if (resultFailed) {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "error",
+                        title: resultFailed,
+                        showConfirmButton: false,
+                        timer: 1500
                         });
-                    }
-                    console.log(response.success);
-                },
-                error: function (xhr) {
-                    console.log(xhr)
                 }
-            });
-        }
-    </script>
 
+            const resultAdd = '@TempData["AddSuccess"]';
+            if (resultAdd) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: resultAdd,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
 
-    <script>
-        const result = '@TempData["updateSuccess"]';
-        if (result) {
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: result,
-                showConfirmButton: false,
-                timer: 1500
-            });
-    }
-
-        const resultFailed = '@TempData["updateFailed"]';
-        if (resultFailed) {
-            Swal.fire({
-                position: "top-end",
-                icon: "error",
-                title: resultFailed,
-                showConfirmButton: false,
-                timer: 1500
-            });
-    }
-
-    const resultAdd = '@TempData["AddSuccess"]';
-    if (resultAdd) {
-        Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: resultAdd,
-            showConfirmButton: false,
-            timer: 1500
-        });
-    }
-
-    
-
-
+    })
     </script>
 }

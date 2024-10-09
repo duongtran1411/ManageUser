@@ -8,12 +8,16 @@ namespace BLL_User.Model
         [Required]
         public int UserId { get; set; }
         [Required]
-        [Range(8,100, ErrorMessage = "Password between 8 to 100 characters")]
+        [MinLength(8, ErrorMessage = "Password must be length at least 8 characters")]
+        [MaxLength(100, ErrorMessage = "Password must be length not over 100 characters")]
         public string Password { get; set; }
         [Required]
-        [Range(8, 100, ErrorMessage = "Password between 8 to 100 characters")]
+        [MinLength(8, ErrorMessage = "New Password must be length at least 8 characters")]
+        [MaxLength(100, ErrorMessage = "New Password must be length not over 100 characters")]
         public string NewPassword { get; set; }
-
+        [Required]
+        [MinLength(8, ErrorMessage = "Confirm Password must be length at least 8 characters")]
+        [MaxLength(100, ErrorMessage = "Confirm Password must be length not over 100 characters")]
         public string ConfirmPassword { get; set; }
     }
 }

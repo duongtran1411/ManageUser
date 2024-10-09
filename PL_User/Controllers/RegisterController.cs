@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using BLL_User.BUS;
 using BLL_User.Model;
 
@@ -16,16 +17,25 @@ namespace PL_User.Controllers
         [HttpPost]
         public ActionResult UserRegister(UserDTO user)
         {
-            var errorMessage = "";
-            if (_userServices.CreateOrEdit(user, out errorMessage))
+            if (ModelState.IsValid)
             {
-                TempData["RegisterSuccess"] = "Register Successful ! Login Right Now";
-                return View("FormLogin","Login");
+                var errorMessage = "";
+                if (_userServices.CreateOrEdit(user, out errorMessage))
+                {
+                    TempData["RegisterSuccess"] = "Register Successful ! Login Right Now";
+                    return View("FormLogin", "Login");
+                }
+                else
+                {
+                    TempData["Dupplicate"] = errorMessage;
+                    return View("FormRegister", "Register");
+                }
             }
             else
             {
-                TempData["Dupplicate"] = errorMessage;
-                return View("FormRegister","Register");
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToArray();
+                TempData["registerFailed"] = string.Join(", ", errors);
+                return RedirectToAction("FormRegister", "Register");
             }
         }
     }

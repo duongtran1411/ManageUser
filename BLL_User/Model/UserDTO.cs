@@ -7,10 +7,12 @@ namespace BLL_User.Model
     {
         public int Id { get; set; }
         [Required]
-        [Range(8, 50, ErrorMessage = "Username must be length between 8 & 50" )]
+        [MinLength(8, ErrorMessage = "Password must be length at least 8 characters")]
+        [MaxLength(50, ErrorMessage = "Password must be length not over 50 characters")]
         public string UserName { get; set; }
         [Required]
-        [Range(8, 50, ErrorMessage = "Password must be length between 8 & 100")]
+        [MinLength(8, ErrorMessage = "Password must be length at least 8 characters")]
+        [MaxLength(50,ErrorMessage = "Password must be length not over 100 characters")]
         public string Password { get; set; }
         [Required(ErrorMessage = "First Name can not empty")]
         [StringLength(50, ErrorMessage = "First Name have max length 50 character")]

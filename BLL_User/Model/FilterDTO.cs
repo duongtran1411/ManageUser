@@ -1,6 +1,4 @@
-﻿using System;
-
-
+﻿
 namespace BLL_User.Model
 {
     public class FilterDTO

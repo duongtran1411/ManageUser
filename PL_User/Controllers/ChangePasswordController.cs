@@ -1,5 +1,6 @@
 ﻿using BLL_User.BUS;
 using BLL_User.Model;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace PL_User.Controllers
@@ -16,15 +17,24 @@ namespace PL_User.Controllers
 
         public ActionResult ChangePass(ChangePassDto input)
         {
-            string errorMessage = string.Empty;
-            if(_services.ChangePassword(input, out errorMessage))
+            if (ModelState.IsValid)
             {
-                TempData["ChangeSuccess"] = "Change Successful";
-                return RedirectToAction("View", "ChangePassword", new {id = input.UserId });
+                string errorMessage = string.Empty;
+                if (_services.ChangePassword(input, out errorMessage))
+                {
+                    TempData["ChangeSuccess"] = "Change Successful";
+                    return RedirectToAction("View", "ChangePassword", new { id = input.UserId });
+                }
+                else
+                {
+                    TempData["ChangeFailed"] = errorMessage;
+                    return RedirectToAction("View", "ChangePassword", new { id = input.UserId });
+                }
             }
             else
             {
-                TempData["ChangeFailed"] = errorMessage;
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToArray();
+                TempData["ChangeFailed"] = string.Join(", ", errors);
                 return RedirectToAction("View", "ChangePassword", new { id = input.UserId });
             }
         }

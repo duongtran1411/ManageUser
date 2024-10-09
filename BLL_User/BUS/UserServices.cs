@@ -12,11 +12,11 @@ namespace BLL_User.BUS
     {
         public List<UserDTO> GetUserByPaging(FilterDTO filter,out int total)
         {
-            var query = GetAllList(a => string.IsNullOrEmpty(filter.FilterSearch) || (!string.IsNullOrEmpty(filter.FilterSearch) && a.user_name.ToLower().Contains(filter.FilterSearch.ToLower())));
-            total = query.Count();
-            if(query != null)
+            var listUser = GetAllList(a => string.IsNullOrEmpty(filter.FilterSearch) || (!string.IsNullOrEmpty(filter.FilterSearch) && a.user_name.ToLower().Contains(filter.FilterSearch.ToLower())));
+            total = listUser.Count();
+            if(listUser != null)
             {
-                var paging = query.OrderBy(u => u.id).Skip(filter.SkipCount).Take(filter.PageCount).ToList();
+                var paging = listUser.OrderBy(u => u.id).Skip(filter.SkipCount).Take(filter.PageCount).ToList();
                 var result = Mapper.Map<List<User>, List<UserDTO>>(paging);
                 return result;
             }
@@ -30,14 +30,14 @@ namespace BLL_User.BUS
             errorMessage = "";
             if(input.Id != 0)
             {
-                var query = FirstOrDeFault(u => u.id == input.Id);
-                if(query != null)
+                var user = FirstOrDeFault(u => u.id == input.Id);
+                if(user != null)
                 {
-                    query.first_name = input.FirstName;
-                    query.last_name = input.LastName;
-                    query.email = input.Email;
-                    query.phone = input.Phone;
-                    Update(query);
+                    user.first_name = input.FirstName;
+                    user.last_name = input.LastName;
+                    user.email = input.Email;
+                    user.phone = input.Phone;
+                    Update(user);
                     return true;
                 }
                 else

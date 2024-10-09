@@ -1,5 +1,6 @@
 ﻿using BLL_User.BUS;
 using BLL_User.Model;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace PL_User.Controllers
@@ -36,6 +37,8 @@ namespace PL_User.Controllers
             }
             else
             {
+                var error = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToArray();
+                TempData["loginFailed"] = string.Join(",", error);
                 return RedirectToAction("FormLogin", "Login");
             }
         }
