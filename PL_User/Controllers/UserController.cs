@@ -84,8 +84,17 @@ namespace PL_User.Controllers
         [HttpGet]
         public ActionResult GetUserToEdit(int userId)
         {
-            UserDTO user = _services.GetUserById(userId);
-            return Json(user, JsonRequestBehavior.AllowGet);
+            if(userId != 0)
+            {
+                UserDTO user = _services.GetUserById(userId);
+                return Json(user, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                TempData["errorMessage"] = "User not existed or deleted";
+                return RedirectToAction("ListUser", "User");
+            }
+            
         }
 
     }
