@@ -9,7 +9,7 @@ namespace BLL_User.BUS
 {
     public class BaseServices<T> where T : class
     {
-        private AssignmentEntities2 dbContext = new AssignmentEntities2();
+        protected AssignmentEntities2 dbContext = new AssignmentEntities2();
         public IMapper Mapper;
         public BaseServices()
         {

@@ -209,14 +209,28 @@
                             userId: id
                         },
                         success: function (response) {
-                            Swal.fire({
-                                title: "Deleted!",
-                                text: "User has been deleted",
-                                icon: "success"
-                            });
-                            setTimeout(() => {
-                                location.reload();
-                            }, 2000)
+                            if (response.success == true) {
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: response.message,
+                                    icon: "success",
+                                    timer: 3000
+                                });
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 2000)
+                            }
+
+                            if (response.notifi == false) {
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: response.errorMessage,
+                                    icon: "error",
+                                    timer: 3000
+                                });  
+                            }
+                           
+                            
                         },
                         error: function (xhr) {
                             console.log(xhr)

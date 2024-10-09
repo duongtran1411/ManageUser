@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using BLL_User.BUS;
 using BLL_User.Model;
 
@@ -39,35 +40,44 @@ namespace PL_User.Controllers
         public ActionResult AddUser(UserDTO userDTO)
         {
             var message = "";
-            if (_services.CreateUser(userDTO))
+            if (_services.CreateOrEdit(userDTO, out message))
             {
                 message = "Add Successful";
                 return Json(new {success = true , message});
             }
             else
             {
-                message = "UserName is existed";
                 return Json(new { success = false, message });
             }
         }
 
-        public void DeleteUser(int userId)
+
+        [HttpGet]
+        public ActionResult DeleteUser(int userId)
         {
-            string message = "";
-            _services.DeleteUserById(userId, message);
+            var message = "";
+            if(_services.DeleteUserById(userId, out message))
+            {
+                return Json(new {success = true , message}, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { success = false, message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]
         public ActionResult EditUser(UserDTO user)
         {
-            if (_services.EditUser(user))
+            var errorMessage = "";
+            if (_services.CreateOrEdit(user, out errorMessage))
             {
-                TempData["updateSuccess"] = "Update Successful";
+                TempData["updateSuccess"] = "Update Successful or Unchanges";
                 return RedirectToAction("Index", "User");
             }
             else
             {
-                TempData["updateFailed"] = "Update Unsuccessful Or Unchanges";
+                TempData["updateFailed"] = errorMessage;
                 return RedirectToAction("Index", "User");
             }
         }

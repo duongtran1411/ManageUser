@@ -16,14 +16,15 @@ namespace PL_User.Controllers
         [HttpPost]
         public ActionResult UserRegister(UserDTO user)
         {
-            if (_userServices.CreateUser(user))
+            var errorMessage = "";
+            if (_userServices.CreateOrEdit(user, out errorMessage))
             {
                 TempData["RegisterSuccess"] = "Register Successful ! Login Right Now";
                 return View("FormLogin","Login");
             }
             else
             {
-                TempData["Dupplicate"] = "Username is existed";
+                TempData["Dupplicate"] = errorMessage;
                 return View("FormRegister","Register");
             }
         }

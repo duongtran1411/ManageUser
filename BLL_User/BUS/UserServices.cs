@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using BLL_User.Extension;
 using BLL_User.Model;
+using System.Data.Entity;
+using System.Web;
 
 namespace BLL_User.BUS
 {
@@ -22,70 +24,87 @@ namespace BLL_User.BUS
             return null;
         }
 
-        public bool CreateUser(UserDTO input)
-        {
-            bool IsUpdateOrCreate = true;
-            var query = FirstOrDeFault(u => u.user_name.Equals(input.UserName));
-            if (query != null)
-            {
-                return !IsUpdateOrCreate;
-            }
-            var user = Mapper.Map<UserDTO, User>(input);
-            user.password = SecurityExtension.EncryptMD5(input.Password);
-            user.created_time = DateTime.Now;
-            Insert(user);
-            return IsUpdateOrCreate;
-        }
+        
 
-        public bool EditUser(UserDTO input)
+        public bool CreateOrEdit(UserDTO input, out string errorMessage)
         {
-            bool isUpdated = false;
-            var query = FirstOrDeFault(u => u.user_name.Equals(input.UserName));
-            var user = FirstOrDeFault(u => u.id == input.Id);
-            if (query != null)
+            errorMessage = "";
+            if(input.Id != 0)
             {
-                if(query.id == input.Id)
+                var query = FirstOrDeFault(u => u.id == input.Id);
+                if(query != null)
                 {
-                    user.first_name = input.FirstName;
-                    user.last_name = input.LastName;
-                    user.email = input.Email;
-                    user.phone = input.Phone;   
-                    Update(user);
-                    isUpdated = true;
-                    return isUpdated;
+                    query.first_name = input.FirstName;
+                    query.last_name = input.LastName;
+                    query.email = input.Email;
+                    query.phone = input.Phone;
+                    Update(query);
+                    return true;
                 }
                 else
                 {
-                    return isUpdated;
+                    errorMessage = "User is not exist or deleted";
+                    return false;
                 }
             }
             else
             {
-                return isUpdated;
+                var isExistedUserName = FirstOrDeFault(u => u.user_name.Equals(input.UserName));    
+                if(isExistedUserName != null)
+                {
+                    errorMessage = "Username is existed";
+                    return false;
+                }
+                else
+                {
+                    var user = Mapper.Map<UserDTO, User>(input);
+                    user.password = SecurityExtension.EncryptMD5(input.Password);
+                    user.created_time = DateTime.Now;
+                    Insert(user);
+                    return true;
+                }
             }
+            
         }
 
-        public void DeleteUserById(int id, string message)
+        public bool DeleteUserById(int id, out string message)
         {
             message = "";
             var user = FirstOrDeFault(u => u.id == id);
             if (user != null)
             {
-                Delete(user);
-                message = "Deleted successful";
+                using (var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.RepeatableRead))
+                {
+                    try
+                    {
+                        Delete(user);
+                        transaction.Commit();
+                        message = "Deleted successful";
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        message = ex.Message;
+                        return false;
+                    }
+                }
             }
             else
             {
                 message = "User has been deleted or not existed";
+                return false;
             }
         }
 
-        public UserDTO GetUserByUserNameAndPassword(LoginDTO loginDto)
+        public UserDTO GetUserByUserNameAndPassword(LoginDTO loginDto, out string errorMessage)
         {
+            errorMessage = "";
             var password = SecurityExtension.EncryptMD5(loginDto.Password);
             var user = FirstOrDeFault(u => u.user_name.Equals(loginDto.UserName) && u.password.Equals(password));
             if (user == null)
             {
+                errorMessage = "Username or password incorrect";
                 return null;
             }
             return Mapper.Map<User, UserDTO>(user);

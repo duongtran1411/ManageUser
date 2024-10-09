@@ -17,9 +17,11 @@ namespace PL_User.Controllers
         [HttpPost]
         public ActionResult UserLogin(LoginDTO loginDto)
         {
-            var result = _services.GetUserByUserNameAndPassword(loginDto);
+            
             if(ModelState.IsValid)
             {
+                var errorMessage = "";
+                var result = _services.GetUserByUserNameAndPassword(loginDto,out errorMessage);
                 if (result != null)
                 {
                     Session["userName"] = result.UserName;
@@ -28,7 +30,7 @@ namespace PL_User.Controllers
                 }
                 else
                 {
-                    TempData["loginFailed"] = "Username or password incorrect";
+                    TempData["loginFailed"] = errorMessage;
                     return RedirectToAction("FormLogin", "Login");
                 }
             }
