@@ -48,8 +48,8 @@ namespace BLL_User.BUS
             }
             else
             {
-                var isExistedUserName = FirstOrDeFault(u => u.user_name.Equals(input.UserName));    
-                if(isExistedUserName != null)
+                var checkUserNameExist = FirstOrDeFault(u => u.user_name.Equals(input.UserName));    
+                if(checkUserNameExist != null)
                 {
                     errorMessage = "Username is existed";
                     return false;
