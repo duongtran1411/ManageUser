@@ -21,7 +21,13 @@ namespace PL_User
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 
-            
+            routes.MapRoute(
+                name: "ChangePassword",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "User", action = "ViewChange", id = UrlParameter.Optional }
+            );
+
+
         }
     }
 }

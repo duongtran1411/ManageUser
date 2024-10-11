@@ -9,34 +9,6 @@ namespace PL_User.Controllers
     {
         private UserServices _userServices = new UserServices();
         // GET: Register
-        public ActionResult FormRegister()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult UserRegister(UserDTO user)
-        {
-            if (ModelState.IsValid)
-            {
-                var errorMessage = "";
-                if (_userServices.CreateOrEdit(user, out errorMessage))
-                {
-                    TempData["RegisterSuccess"] = "Register Successful ! Login Right Now";
-                    return View("FormLogin", "Login");
-                }
-                else
-                {
-                    TempData["Dupplicate"] = errorMessage;
-                    return View("FormRegister", "Register");
-                }
-            }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToArray();
-                TempData["registerFailed"] = string.Join(", ", errors);
-                return RedirectToAction("FormRegister", "Register");
-            }
-        }
+        
     }
 }

@@ -117,5 +117,67 @@ namespace PL_User.Controllers
 
         }
 
+        public ActionResult FormRegister()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UserRegister(UserDTO user)
+        {
+            if (ModelState.IsValid)
+            {
+                var errorMessage = "";
+                if (_services.CreateOrEdit(user, out errorMessage))
+                {
+                    TempData["RegisterSuccess"] = "Register Successful ! Login Right Now";
+                    return View("FormLogin", "Login");
+                }
+                else
+                {
+                    TempData["Dupplicate"] = errorMessage;
+                    return View("FormRegister", "Register");
+                }
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToArray();
+                TempData["registerFailed"] = string.Join(", ", errors);
+                return RedirectToAction("FormRegister", "Register");
+            }
+        }
+
+
+        public ActionResult ViewChange(int id)
+        {
+            UserDTO user = _services.GetUserById(id);
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult ChangePass(ChangePassDto input)
+        {
+            if (ModelState.IsValid)
+            {
+                string errorMessage = string.Empty;
+                if (_services.ChangePassword(input, out errorMessage))
+                {
+                    TempData["ChangeSuccess"] = "Change Successful";
+                    return RedirectToAction("ViewChange", "User", new { id = input.UserId });
+                }
+                else
+                {
+                    TempData["ChangeFailed"] = errorMessage;
+                    return RedirectToAction("ViewChange", "User", new { id = input.UserId });
+                }
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToArray();
+                TempData["ChangeFailed"] = string.Join(", ", errors);
+                return RedirectToAction("ViewChange", "User", new { id = input.UserId });
+            }
+        }
+
     }
 }

@@ -1,150 +1,157 @@
-﻿@model BLL_User.Model.UserDTO
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @Styles.Render("~/ManageUser/css")
-@Styles.Render("~/Datatable/css")
-<h1 class="text-center">Manage User</h1>
-    <div class="container">
-        <div class="row">
-            <div class="col-2">
-                <a class="btn btn-primary" id="myButton">+ Add</a>
-            </div>
-            <table id="tableUser" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>UserName</th>
-                        <th>FirstName</th>
-                        <th>LastName</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Created Time</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="loginModalLabel" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content p-4">
-                <div class="d-flex justify-content-end">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header text-center d-flex justify-content-sm-center">
+                    <h2 class="card-title">Manage User</h2>
                 </div>
-                <div class="modal-body p-0">
-                    <form method="post" id="formUser">
-                        <h3 class="text-center">ADD USER</h3>
-                        <div class="row pb-2">
-                            <div class="col-6">
-                                <label class="form-label"><sup>*</sup>FirstName:</label>
-                                <input type="text" class="form-control" name="FirstName" id="addFirstName" />
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label"><sup>*</sup>LastName:</label>
-                                <input type="text" class="form-control" name="LastName" id="addLastName" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 pb-2">
-                                <label class="form-label"><sup>*</sup>Email:</label>
-                                <input type="email" class="form-control" name="Email" id="addEmail" />
-                            </div>
 
-                            <div class="col-12 pb-2">
-                                <label class="form-label"><sup>*</sup>Phone:</label>
-                                <input type="text" class="form-control" name="Phone" id="addPhone" />
-                            </div>
-
-                            <div class="col-12 pb-2">
-                                <label class="form-label"><sup>*</sup>UserName:</label>
-                                <input type="text" class="form-control" name="UserName" id="addUserName" />
-                            </div>
-                            <div class="col-12 pb-2">
-                                <label class="form-label"><sup>*</sup>Password:</label>
-                                <input type="password" class="form-control" name="Password" id="password" />
-                            </div>
-                            <div class="col-12 pb-2">
-                                <label class="form-label"><sup>*</sup>Confirm Password:</label>
-                                <input type="password" class="form-control" name="confirm_password" />
-                            </div>
-                        </div>
-                        <div class="pt-3 d-flex justify-content-end">
-                            <button class="btn btn-primary w-25">Add User</button>
-                        </div>
-                    </form>
+                <div class="card-body">
+                    <a class="btn btn-info btnTableCustom mb-1" id="myButton"><i class="fas fa-plus-circle"></i> Add</a>
+                    <table id="tableUser" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>UserName</th>
+                                <th>FirstName</th>
+                                <th>LastName</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Created Time</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
+               
             </div>
         </div>
+        
     </div>
+    
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true"  backdrop="static" keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content p-4">
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btnAdd"></button>
+            </div>
+            <div class="modal-body p-0">
+                <form method="post" id="formUser">
+                    <h3 class="text-center">ADD USER</h3>
+                    <div class="row pb-2">
+                        <div class="col-6">
+                            <label class="form-label"><sup>*</sup>FirstName:</label>
+                            <input type="text" class="form-control" name="FirstName" id="addFirstName" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label"><sup>*</sup>LastName:</label>
+                            <input type="text" class="form-control" name="LastName" id="addLastName" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 pb-2">
+                            <label class="form-label"><sup>*</sup>Email:</label>
+                            <input type="email" class="form-control" name="Email" id="addEmail" />
+                        </div>
 
-    <div class="modal fade" id="inforUserDetail" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content p-4">
-                <div class="d-flex justify-content-end">
-                    <button id="closeEdit" class="btn btn-close"></button>
-                </div>
-                <div class="modal-body p-0">
-                    <h3 class="text-center">EDIT USER</h3>
-                    <form action="/User/EditUser" method="post" id="formEdit">
-                        <div class="row pb-2">
-                            <div class="col-6">
-                                <label class="form-label"><sup>*</sup>FirstName:</label>
-                                <input type="text" class="form-control" name="FirstName" id="editFirstName" />
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label"><sup>*</sup>LastName:</label>
-                                <input type="text" class="form-control" name="LastName" id="editLastName" />
-                            </div>
+                        <div class="col-12 pb-2">
+                            <label class="form-label"><sup>*</sup>Phone:</label>
+                            <input type="text" class="form-control" name="Phone" id="addPhone" />
                         </div>
-                        <div class="row">
-                            <div class="col-12 pb-2">
-                                <label class="form-label"><sup>*</sup>Email:</label>
-                                <input type="email" class="form-control" name="Email" id="editEmail" />
-                            </div>
-                            <input type="hidden" class="form-control" name="Id" id="editId" readonly />
-                            <div class="col-12 pb-2">
-                                <label class="form-label"><sup>*</sup>Phone:</label>
-                                <input type="text" class="form-control" name="Phone" id="editPhone" />
-                            </div>
 
-                            <div class="col-12 pb-2">
-                                <label class="form-label"><sup>*</sup>UserName:</label>
-                                <input type="text" class="form-control" name="UserName" id="editUserName" readonly />
-                            </div>
-                            <input type="hidden" class="form-control" name="Password" id="editPassword" />
+                        <div class="col-12 pb-2">
+                            <label class="form-label"><sup>*</sup>UserName:</label>
+                            <input type="text" class="form-control" name="UserName" id="addUserName" />
                         </div>
-                        <div class="pt-3 d-flex justify-content-end">
-                            <button class="btn btn-primary w-25" type="submit">Save User</button>
+                        <div class="col-12 pb-2">
+                            <label class="form-label"><sup>*</sup>Password:</label>
+                            <input type="password" class="form-control" name="Password" id="password" />
                         </div>
-                    </form>
-                </div>
+                        <div class="col-12 pb-2">
+                            <label class="form-label"><sup>*</sup>Confirm Password:</label>
+                            <input type="password" class="form-control" name="confirm_password" />
+                        </div>
+                    </div>
+                    <div class="pt-3 d-flex justify-content-end">
+                        <button class="btn btn-primary w-25">Add User</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="inforUserDetail" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" backdrop="static" keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content p-4">
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btnEdit"></button>
+            </div>
+            <div class="modal-body p-0">
+                <h3 class="text-center">EDIT USER</h3>
+                <form action="/User/EditUser" method="post" id="formEdit">
+                    <div class="row pb-2">
+                        <div class="col-6">
+                            <label class="form-label"><sup>*</sup>FirstName:</label>
+                            <input type="text" class="form-control" name="FirstName" id="editFirstName" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label"><sup>*</sup>LastName:</label>
+                            <input type="text" class="form-control" name="LastName" id="editLastName" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 pb-2">
+                            <label class="form-label"><sup>*</sup>Email:</label>
+                            <input type="email" class="form-control" name="Email" id="editEmail" />
+                        </div>
+                        <input type="hidden" class="form-control" name="Id" id="editId" readonly />
+                        <div class="col-12 pb-2">
+                            <label class="form-label"><sup>*</sup>Phone:</label>
+                            <input type="text" class="form-control" name="Phone" id="editPhone" />
+                        </div>
+
+                        <div class="col-12 pb-2">
+                            <label class="form-label"><sup>*</sup>UserName:</label>
+                            <input type="text" class="form-control" name="UserName" id="editUserName" readonly />
+                        </div>
+                        <input type="hidden" class="form-control" name="Password" id="editPassword" />
+                    </div>
+                    <div class="pt-3 d-flex justify-content-end">
+                        <button class="btn btn-primary w-25" type="submit">Save User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts {
+    @Scripts.Render("~/AdminLte/js")
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
-        function showModalAdd() {
-            var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
-            myModal.show();
-        }
-        document.getElementById('myButton').addEventListener('click', showModalAdd);
+        $('#myButton').on('click', function () {
+            $('#exampleModal').modal({
+                backdrop: 'static',  
+                keyboard: false     
+            });
+        });
+        $('#myButton').on('click', function () {
+            $('#exampleModal').modal('show');
+        });
 
+        $('#btnAdd').on('click', function () {
+            $('#exampleModal').modal('hide');
+        });
 
-        function showModal() {
-            var myModal = new bootstrap.Modal(document.getElementById('inforUserDetail'));
-            myModal.show();
-        }
-
-        function hideModal() {
-            var myModal = document.getElementById('inforUserDetail');
-            var modalInstance = bootstrap.Modal.getInstance(myModal);
-
-            modalInstance.hide();
-        }
-        document.getElementById('closeEdit').addEventListener('click', hideModal);
+        $('#btnEdit').on('click', function () {
+            $('#inforUserDetail').modal('hide');
+        });
 
         function EditUser(id) {
             $.ajax({
@@ -161,7 +168,11 @@
                     $('#editPhone').val(response.Phone);
                     $('#editUserName').val(response.UserName);
                     $('#editPassword').val(response.Password);
-                    showModal();
+                    $('#inforUserDetail').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    $('#inforUserDetail').modal('show');
                 },
                 error: function (xhr) {
                     console.log(first_name)
@@ -208,8 +219,6 @@
                                     timer: 3000
                                 });
                             }
-
-
                         },
                         error: function (xhr) {
                             console.log(xhr)
@@ -223,14 +232,14 @@
             $('#tableUser').DataTable({
                 "serverSide": true,
                 "processing": true,
+                "orderMulti": false, 
+                "ordering": false,
                 "lengthMenu": [
                     [10, 20, 30],
                     [10, 20, 30]
                 ],
-                scrollX: true,
                 "language": {
                     searchPlaceholder: "Tìm kiếm theo username",
-
                 },
                 "columnDefs": [{
                     "targets": [1],
@@ -269,11 +278,12 @@
                         },
                         {
                             "data": null,
+                            "name": "Action",
                             "render": function (data, type, full, meta) {
                                 var actionButtons = '';
-                                actionButtons += '<button class="btn btn-success" onclick="EditUser(' + full.Id + ')">Edit</button> ';
-                                actionButtons += '<button class="btn btn-danger" onclick="DeleteUser(' + full.Id + ')">Delete</button>';
-                                actionButtons += '<a class="mx-1 btn btn-info text-white" href="/ChangePassword/View/' + full.Id + '">Reset Password</a> ';
+                                actionButtons += '<a class="btn" onclick="EditUser(' + full.Id + ')"><i class="far fa-edit"></i></a> ';
+                                actionButtons += '<a id="btnBlock" class="btn" onclick="DeleteUser(' + full.Id + ')"><i class="fas far fa-trash-alt"></i></a>';
+                                actionButtons += '<a class="btn" href="/User/ViewChange/' + full.Id + '"><i class="fas fa-redo"></i></a> ';
                                 return actionButtons;
                             },
                             "orderable": false
@@ -515,7 +525,6 @@
                     timer: 1500
                 });
             }
-
     })
     </script>
 }
