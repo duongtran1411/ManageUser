@@ -16,7 +16,7 @@ namespace PL_User
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));           
+                        "~/Scripts/modernizr-*"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.min.css"
@@ -41,6 +41,13 @@ namespace PL_User
                 "~/Content/plugins/datatables-responsive/css/responsive.bootstrap4.min.css",
                 "~/Content/plugins/datatables-buttons/css/buttons.bootstrap4.min.css",
                 "~/Content/dist/css/adminlte.min.css"
+            ));
+            bundles.Add(new ScriptBundle("~/Validate/Js").Include(
+                "~/Content/Js/ManageUser.js"
+            ));
+
+            bundles.Add(new ScriptBundle("~/ValidatePassword/Js").Include(
+                "~/Content/Js/ValidateChange.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/loadApp").Include(
@@ -69,10 +76,6 @@ namespace PL_User
                 ("~/Content/dist/js/adminlte.min.js"),
                 ("~/Content/plugins/dist/js/demo.js")
             ));
-
-
-            
-
         }
     }
 }

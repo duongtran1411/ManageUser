@@ -119,7 +119,7 @@ namespace PL_User.Controllers
 
         public ActionResult FormRegister()
         {
-            return View();
+            return View("FormRegister","../Views/Register");
         }
 
         [HttpPost]
@@ -136,14 +136,14 @@ namespace PL_User.Controllers
                 else
                 {
                     TempData["Dupplicate"] = errorMessage;
-                    return View("FormRegister", "Register");
+                    return View("FormRegister", "User");
                 }
             }
             else
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToArray();
                 TempData["registerFailed"] = string.Join(", ", errors);
-                return RedirectToAction("FormRegister", "Register");
+                return RedirectToAction("FormRegister", "User");
             }
         }
 
