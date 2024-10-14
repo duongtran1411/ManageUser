@@ -113,7 +113,6 @@
                             <label class="form-label"><sup>*</sup>Phone:</label>
                             <input type="text" class="form-control" name="Phone" id="editPhone" />
                         </div>
-
                         <div class="col-12 pb-2">
                             <label class="form-label"><sup>*</sup>UserName:</label>
                             <input type="text" class="form-control" name="UserName" id="editUserName" readonly />
@@ -227,37 +226,37 @@
         };
 
         const result = '@TempData["updateSuccess"]';
-if (result) {
-    Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: result,
-        showConfirmButton: false,
-        timer: 1500
-    });
-}
+        if (result) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: result,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
 
-const resultFailed = '@TempData["updateFailed"]';
-if (resultFailed) {
-    Swal.fire({
-        position: "top-end",
-        icon: "error",
-        title: resultFailed,
-        showConfirmButton: false,
-        timer: 1500
-    });
-}
+        const resultFailed = '@TempData["updateFailed"]';
+        if (resultFailed) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: resultFailed,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
 
-const resultAdd = '@TempData["AddSuccess"]';
-if (resultAdd) {
-    Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: resultAdd,
-        showConfirmButton: false,
-        timer: 1500
-    });
-}
+        const resultAdd = '@TempData["AddSuccess"]';
+        if (resultAdd) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: resultAdd,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
 
     </script>
 }

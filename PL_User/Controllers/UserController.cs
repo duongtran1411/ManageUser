@@ -72,7 +72,6 @@ namespace PL_User.Controllers
             {
                 return Json(new { success = false, message }, JsonRequestBehavior.AllowGet);
             }
-
         }
 
         [HttpPost]
@@ -146,7 +145,6 @@ namespace PL_User.Controllers
                 return RedirectToAction("FormRegister", "User");
             }
         }
-
 
         public ActionResult ViewChange(int id)
         {

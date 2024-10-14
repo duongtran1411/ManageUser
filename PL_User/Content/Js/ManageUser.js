@@ -240,7 +240,6 @@
                     setTimeout(() => {
                         window.location.href('/User/ListUser');
                     }, 2000);
-
                 }
                 if (response.success == false) {
                     Swal.fire({
