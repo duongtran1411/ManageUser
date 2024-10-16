@@ -28,6 +28,13 @@ namespace PL_User
             );
 
 
+            routes.MapRoute(
+                name: "AddUser",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "User", action = "AddUser", id = UrlParameter.Optional }
+            );
+
+
         }
     }
 }

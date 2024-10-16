@@ -18,3 +18,240 @@ select,
 textarea {
     max-width: 280px;
 }*/
+
+body {
+}
+
+/* Set padding to keep content from hitting the edges */
+/*.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}*/
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+
+.otp-box {
+    min-width: 560px !important;
+}
+
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+.dropdown-menu-right {
+    top: 115% !important;
+}
+
+.dropdown-menu-lg {
+    min-width: 200px !important;
+}
+
+.ml-auto .nav-link {
+    padding-top: 4px !important;
+}
+
+.btnActionTable {
+    padding: 0;
+}
+
+.btnTableCustom {
+    float: right;
+    display: none;
+    margin-left: 10px;
+}
+
+    .btnTableCustom i {
+        margin-right: 5px;
+    }
+
+.btn-primary {
+    opacity: 0.7 !important;
+}
+
+button i, a i {
+    margin-right: 5px;
+}
+
+.tab-pane {
+    padding: 1.25rem;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 31px !important;
+    right: 6px !important;
+}
+
+.select2-container--default .select2-selection--single {
+    border: 1px solid #ced4da !important;
+    padding: 0.46875rem 0.75rem !important;
+    height: calc(2.25rem + 2px) !important;
+}
+
+.lbl-new.notify-info .notify-text {
+    padding: 2em 0em;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: left;
+}
+
+.lbl-new.notify-info .swal2-icon {
+    position: relative;
+    box-sizing: content-box;
+    justify-content: center;
+    width: 3em;
+    height: 3em;
+    min-width: 3em;
+    min-height: 3em;
+    margin: 1.25em;
+    zoom: normal;
+    border-radius: 50%;
+    font-family: inherit;
+    line-height: 3em;
+    cursor: default;
+}
+
+.lbl-new.notify-info .swal2-html-container {
+    display: inline-flex !important;
+    border-image: -webkit-radial-gradient(#cdcdcd 75%, rgb(255, 255, 255));
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    border-image-slice: 1;
+}
+
+.lbl-new.notify-info .swal2-title {
+    font-size: 20px;
+    text-align: left;
+}
+
+.btnConfirm {
+    font-size: 14px !important;
+}
+
+.swal2-icon.swal2-warning::before {
+    content: "!";
+    display: flex;
+    align-items: center;
+    height: 92%;
+    font-size: 2.75em;
+}
+
+input.error, textarea.error {
+    border: 1px solid #b94a48 !important;
+}
+
+.error {
+    color: #b94a48;
+    font-size: 85%;
+    font-weight: 500 !important;
+    text-align: left !important;
+}
+
+.btnEditCustom {
+    min-width: 90px;
+}
+
+.card-inside {
+    margin-top: 15px;
+}
+
+    .card-inside .card-header {
+        color: #333;
+        background-color: #f3f3f3;
+        border-color: #ddd;
+    }
+
+    .card-inside .card-title {
+        font-weight: 600;
+    }
+
+.modalTable {
+}
+
+    .modalTable .modal-dialog {
+        max-width: 1000px;
+    }
+
+    .modalTable .modal-header-custom {
+        color: #fff;
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+        padding: 0.5rem;
+    }
+
+    .modalTable .modal-footer-custom {
+        padding: 0.3rem;
+    }
+
+.noData {
+    text-align: center;
+}
+
+.table-hover thead tr {
+    background-color: #e9ecef;
+}
+
+.swal2-styled.swal2-confirm {
+    color: #fff;
+    background-color: #17a2b8 !important;
+    border-color: #17a2b8 !important;
+    box-shadow: none;
+}
+
+.select2-container.select2-container-disabled .select2-choice {
+    background-color: #ddd;
+    border-color: #a8a8a8;
+}
+
+.link-button {
+    color: #3276b1;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.swal2-popup {
+    padding-bottom: 0.5rem !important;
+}
+
+.swal2-actions {
+    margin-top: 0.5rem !important;
+}
+
+    .swal2-actions .btnEditCustom {
+        line-height: 1 !important;
+    }
+
+.btnActionTreeView {
+    line-height: 1 !important;
+}
+
+.table-custom-responsive {
+    width: 100%;
+}
+
+.dataTables_wrapper {
+    overflow-x: auto;
+}
+
+.nav-sidebar .nav-treeview {
+    padding-left: 15px;
+}
+
+.sidebar-mini .main-sidebar .nav-link, .sidebar-mini-md .main-sidebar .nav-link, .sidebar-mini-xs .main-sidebar .nav-link {
+    width: calc(250px - .7rem * 2) !important;
+}
+
+select.error + span span.select2-selection {
+    border: 1px solid #b94a48 !important;
+}
+
+.page-item.active .page-link {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.page-link {
+    color: #17a2b8;
+}

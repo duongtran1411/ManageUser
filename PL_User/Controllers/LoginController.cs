@@ -26,6 +26,7 @@ namespace PL_User.Controllers
                 if (result != null)
                 {
                     Session["userName"] = result.UserName;
+                    Session["Id"] = result.Id;
                     TempData["loginSuccess"] = "Login Successful";
                     return RedirectToAction("Index", "Home");
                 }
@@ -49,6 +50,36 @@ namespace PL_User.Controllers
             Session["userName"] = null;
             Session.Clear();
             return RedirectToAction("FormLogin", "Login");
+        }
+
+        public ActionResult FormRegister()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UserRegister(UserDTO user)
+        {
+            if (ModelState.IsValid)
+            {
+                var errorMessage = "";
+                if (_services.CreateOrEdit(user, out errorMessage))
+                {
+                    TempData["RegisterSuccess"] = "Register Successful ! Login Right Now";
+                    return View("FormLogin", "Login");
+                }
+                else
+                {
+                    TempData["Dupplicate"] = errorMessage;
+                    return View("FormRegister", "User");
+                }
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToArray();
+                TempData["registerFailed"] = string.Join(", ", errors);
+                return RedirectToAction("FormRegister", "User");
+            }
         }
     }
 }

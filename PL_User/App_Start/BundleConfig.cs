@@ -1,4 +1,5 @@
-﻿using System.Web.Optimization;
+﻿using System.Data;
+using System.Web.Optimization;
 
 namespace PL_User
 {
@@ -37,11 +38,18 @@ namespace PL_User
 
             bundles.Add(new StyleBundle("~/AdminLte/css").Include(
                 "~/Content/plugins/fontawesome-free/css/all.min.css",
+                "~/Content/dist/css/adminlte.min.css",
+                "~/Content/plugins/overlayScrollbars/css/OverlayScrollbars.min.css",
+                "~/Content/plugins/toastr/toastr.min.css"
+            ));
+
+            bundles.Add(new StyleBundle("~/Datatable/css").Include(
                 "~/Content/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css",
                 "~/Content/plugins/datatables-responsive/css/responsive.bootstrap4.min.css",
                 "~/Content/plugins/datatables-buttons/css/buttons.bootstrap4.min.css",
                 "~/Content/dist/css/adminlte.min.css"
             ));
+
             bundles.Add(new ScriptBundle("~/Validate/Js").Include(
                 "~/Content/Js/ManageUser.js"
             ));
@@ -59,23 +67,24 @@ namespace PL_User
             ));
 
             bundles.Add(new ScriptBundle("~/AdminLte/js").Include(
-                ("~/Content/plugins/jquery/jquery.min.js"),
-                ("~/Content/plugins/bootstrap/js/bootstrap.bundle.min.js"),
-                ("~/Content/plugins/datatables/jquery.dataTables.min.js"),
-                ("~/Content/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"),
-                ("~/Content/plugins/datatables-responsive/js/dataTables.responsive.min.js"),
-                ("~/Content/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"),
-                ("~/Content/plugins/datatables-buttons/js/dataTables.buttons.min.js"),
-                ("~/Content/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"),
-                ("~/Content/plugins/jszip/jszip.min.js"),
-                ("~/Content/plugins/pdfmake/pdfmake.min.js"),
-                ("~/Content/plugins/pdfmake/vfs_fonts.js"),
-                ("~/Content/datatables-buttons/js/buttons.html5.min.js"),
-                ("~/Content/plugins/datatables-buttons/js/buttons.print.min.js"),
-                ("~/Content/plugins/datatables-buttons/js/buttons.colVis.min.js"),
-                ("~/Content/dist/js/adminlte.min.js"),
-                ("~/Content/plugins/dist/js/demo.js")
+                "~/Content/plugins/jquery/jquery.min.js",
+                "~/Content/plugins/bootstrap/js/bootstrap.bundle.min.js",
+                "~/Content/plugins/datatables/jquery.dataTables.min.js",
+                "~/Content/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js",
+                "~/Content/plugins/datatables-responsive/js/dataTables.responsive.min.js",
+                "~/Content/plugins/datatables-responsive/js/responsive.bootstrap4.min.js",
+                "~/Content/plugins/datatables-buttons/js/dataTables.buttons.min.js",
+                "~/Content/plugins/datatables-buttons/js/buttons.bootstrap4.min.js",
+                "~/Content/plugins/jszip/jszip.min.js",
+                "~/Content/plugins/pdfmake/pdfmake.min.js",
+                "~/Content/plugins/pdfmake/vfs_fonts.js",
+                "~/Content/datatables-buttons/js/buttons.html5.min.js",
+                "~/Content/plugins/datatables-buttons/js/buttons.print.min.js",
+               "~/Content/plugins/datatables-buttons/js/buttons.colVis.min.js",
+                "~/Content/dist/js/adminlte.min.js",
+                "~/Content/plugins/dist/js/demo.js"
             ));
+
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 using BLL_User.BUS;
@@ -33,6 +34,11 @@ namespace PL_User.Controllers
             {
                 return Json(new { recordsFiltered = 0, recordsTotal = 0, data = new List<UserDTO>() });
             }
+        }
+
+        public ActionResult AddUser()
+        {
+           return View();
         }
 
         [HttpPost]
@@ -74,6 +80,12 @@ namespace PL_User.Controllers
             }
         }
 
+
+        public ActionResult EditUser(int id)
+        {
+            UserDTO user = _services.GetUserById(id);
+            return View(user);
+        }
         [HttpPost]
         public ActionResult EditUser(UserDTO user)
         {
@@ -114,36 +126,6 @@ namespace PL_User.Controllers
                 return RedirectToAction("ListUser", "User", JsonRequestBehavior.AllowGet);
             }
 
-        }
-
-        public ActionResult FormRegister()
-        {
-            return View("FormRegister","../Views/Register");
-        }
-
-        [HttpPost]
-        public ActionResult UserRegister(UserDTO user)
-        {
-            if (ModelState.IsValid)
-            {
-                var errorMessage = "";
-                if (_services.CreateOrEdit(user, out errorMessage))
-                {
-                    TempData["RegisterSuccess"] = "Register Successful ! Login Right Now";
-                    return View("FormLogin", "Login");
-                }
-                else
-                {
-                    TempData["Dupplicate"] = errorMessage;
-                    return View("FormRegister", "User");
-                }
-            }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToArray();
-                TempData["registerFailed"] = string.Join(", ", errors);
-                return RedirectToAction("FormRegister", "User");
-            }
         }
 
         public ActionResult ViewChange(int id)

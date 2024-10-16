@@ -11,3 +11,17 @@ sup {
     white-space: nowrap;
     width: 100%;
 }
+
+.dt-paging-button {
+    background-color: white;
+    color: #333;
+    margin: 0 2px;
+    border-radius: 4px;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.dt-paging-button:hover {
+    background-color: #ddd;
+}
