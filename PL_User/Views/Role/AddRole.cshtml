@@ -1,0 +1,90 @@
+﻿@model BLL_User.Model.RoleDTO
+@{
+    ViewBag.Title = "AddRole";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="../../Content/plugins/fancyTree/dist/skin-vista/ui.fancytree.min.css">
+<div class="card card-secondary">
+    <div class="card-header">
+        <h3 class="card-title">Add Role</h3>
+    </div>
+    @using (Html.BeginForm("AddRole", "Role", FormMethod.Post, new { id = "formRole" }))
+    {
+        <div class="card-body">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.PostPermission)
+            @Html.HiddenFor(m => m.ListPermission)
+            <div class="row">
+                <div class="col-5">
+                    <div class="form-group">
+                        <label>Tên vai trò</label>
+                        @Html.TextBoxFor(m => m.RoleName, new { @class = "form-control", @placeholder = "Nhập tên vai trò" })
+                    </div>
+                    <div class="form-group">
+                        <label>Mô tả</label>
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                    </div>
+                    @Html.HiddenFor(m => m.PostPermission, new { @id = "PostPermission", @class = "form-control" })
+                </div>
+                <div class="col-7">
+                    <div id="treePermission">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-info btnEditCustom" id="btnSave"><i class="far fa-save"></i>Lưu</button>
+            <a href="/Role/Index" class="btn btn-secondary btnEditCustom" id="btnBack"><i class="fas fa-sign-out-alt"></i>Hủy</a>
+        </div>
+    }
+</div>
+@section scripts{
+    <script src="../../Content/plugins/fancyTree/dist/jquery.fancytree-all-deps.min.js"></script>
+    <script>
+        $(function () {
+            $("#treePermission").fancytree({
+                checkbox: true,
+                selectMode: 3,
+                source: @Html.Raw(Model.ListPermission),
+                init: function (event, data) {
+                    data.tree.visit(function (n) {
+                        n.expanded = true;
+                        if (n.data.preselected) n.setSelected(true);
+                    });
+                },
+                loadChildren: function (event, ctx) {
+                    ctx.node.fixSelection3AfterClick();
+                },
+                select: function (event, data) {
+                    var selKeys = $.map(data.tree.getSelectedNodes(), function (node) {
+                        return node.key;
+                    });
+                    $("#PostPermission").val(selKeys.join(","));
+                }
+            })
+        });
+        
+
+        const resultAdd = '@TempData["AddSuccess"]';
+        if (resultAdd) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: resultAdd,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+            const resultFailed = '@TempData["AddFailed"]';
+            if (resultFailed) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: resultFailed,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+    </script>
+}

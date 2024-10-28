@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @Styles.Render("~/ManageUser/css")
+<link rel="stylesheet" href="../../Content/plugins/fancyTree/dist/skin-vista/ui.fancytree.min.css">
+<link rel="stylesheet" href="../../Content/plugins/select2/css/select2.min.css">
 <div class="card card-secondary">
     <div class="card-header">
         <h3 class="card-title">Thêm mới</h3>
@@ -42,6 +44,14 @@
                         <label for="PasswordConfirm">Nhập lại mật khẩu</label>
                         <input type="password" class="form-control" name="confirm_password" placeholder="Enter confirm password" />
                     </div>
+                    <div class="form-group" id="RoleGr">
+                        <label>Vai trò</label>
+                        @Html.DropDownListFor(m => m.PostRole, new SelectList(ViewBag.Role, "Value", "Text"), new { @class = "form-control select2-multi", @multiple = "multiple", @Id = "RoleValue" })
+                    </div>
+                </div>
+                <div class="col-7">
+                    <label>Danh sách quyền</label>
+                    <div id="treePermission"></div>
                 </div>
             </div>
         </div>
@@ -54,7 +64,28 @@
 @section scripts{
     @Scripts.Render("~/Validate/Js")
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="../../Content/plugins/fancyTree/dist/jquery.fancytree-all-deps.min.js"></script>
+    <script src="../../Content/plugins/select2/js/select2.full.min.js"></script>
     <script>
+        $(function () {
+            $('.select2-multi').select2();
+            $("#RoleValue").change(function () {
+                if ($(this).val()[0]) {
+                    $('#treePermission').fancytree
+                        ({
+                            source: {
+                                url: "/Permission/GetPermissionByRoleId?roleId=" + $("#RoleValue").val(),
+                                cache: false
+                            }
+                        });
+                }
+                $('#formUser').validate().element('#RoleValue');
+            })
+            if ($('#Roles').val()) {
+                $('#RoleValue').val($('#Roles').val().split(',')).change();
+            }
+        })
+
         const errorMessage = '@TempData["addFailed"]';
         if (errorMessage.length > 0) {
             Swal.fire({

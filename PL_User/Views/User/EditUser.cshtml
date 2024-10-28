@@ -15,18 +15,18 @@
     {
         <div class="card-body">
             <div class="row">
-                <div class="col-12">
+                <div class="col-5">
                     <div class="row pb-2">
                         <div class="form-group col-6">
                             <label class="form-label"><sup>*</sup>FirstName:</label>
-                            @Html.TextBoxFor(m => m.FirstName, new {@class = "form-control" , @value = @Model.FirstName })
-                            
+                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @value = @Model.FirstName })
                         </div>
                         <div class="form-group col-6">
                             <label class="form-label"><sup>*</sup>LastName:</label>
                             @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @value = @Model.LastName })
                         </div>
                     </div>
+                    
                     <div class="row">
                         <div class="form-group col-12 pb-2">
                             <label class="form-label"><sup>*</sup>Email:</label>
@@ -41,8 +41,16 @@
                             <label class="form-label"><sup>*</sup>UserName:</label>
                             @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @readonly = "readonly", @value = @Model.UserName })
                         </div>
+                        <div class="form-group col-12 pb-2" id="RoleGr">
+                            <label>Vai trò</label>
+                            @Html.DropDownListFor(m => m.PostRole, new SelectList(ViewBag.Role, "Value", "Text"), new { @class = "form-control select2-multi", @multiple = "multiple", @Id = "RoleValue" })
+                        </div>
                         @Html.HiddenFor(m => m.Password, new { @class = "form-control", @value = @Model.Password })
                     </div>
+                </div>
+                <div class="col-7">
+                    <label>Danh sách quyền</label>
+                    <div id="treePermission"></div>
                 </div>
             </div>
         </div>
@@ -55,5 +63,27 @@
 @section scripts {
     @Scripts.Render("~/Validate/Js")
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="../../Content/plugins/fancyTree/dist/jquery.fancytree-all-deps.min.js"></script>
+    <script src="../../Content/plugins/select2/js/select2.full.min.js"></script>
+    <script>
+        $(function () {
+            $('.select2-multi').select2();
+            $("#RoleValue").change(function () {
+                if ($(this).val()[0]) {
+                    $('#treePermission').fancytree
+                        ({
+                            source: {
+                                url: "/Permission/GetPermissionByRoleId?roleId=" + $("#RoleValue").val(),
+                                cache: false
+                            }
+                        });
+                }
+                $('#formEdit').validate().element('#RoleValue');
+            })
+            if ($('#Roles').val()) {
+                $('#RoleValue').val($('#Roles').val().split(',')).change();
+            }
+        })
+    </script>
 
 }

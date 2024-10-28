@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 using BLL_User.BUS;
+using BLL_User.Enumeration;
 using BLL_User.Model;
 
 namespace PL_User.Controllers
@@ -11,7 +11,9 @@ namespace PL_User.Controllers
     public class UserController : BaseController
     {
         private UserServices _services = new UserServices();
+        private RoleServices _roleServices = new RoleServices();
         // GET: User
+        [AuthorizeUser(RoleEnums.User_View)]
         public ActionResult Index()
         {
             return View();
@@ -36,18 +38,22 @@ namespace PL_User.Controllers
             }
         }
 
+        [AuthorizeUser(RoleEnums.User_Created)]
         public ActionResult AddUser()
         {
-           return View();
+            LoadRoleStatic();
+            return View();
         }
 
         [HttpPost]
+        [AuthorizeUser(RoleEnums.User_Created)]
         public ActionResult AddUser(UserDTO userDTO)
         {
             if (ModelState.IsValid)
             {
                 var message = "";
-                if (_services.CreateOrEdit(userDTO, out message))
+                long userId = (long)Session["Id"];
+                if (_services.CreateOrEdit(userDTO, out message, userId))
                 {
                     message = "Add Successful";
                     return Json(new { success = true, message });
@@ -67,10 +73,12 @@ namespace PL_User.Controllers
 
 
         [HttpGet]
+        [AuthorizeUser(RoleEnums.User_Deleted)]
         public ActionResult DeleteUser(int userId)
         {
             var message = "";
-            if (_services.DeleteUserById(userId, out message))
+            long userDeleted = (long)Session["Id"];
+            if (_services.DeleteUserById(userId, out message, userDeleted))
             {
                 return Json(new { success = true, message }, JsonRequestBehavior.AllowGet);
             }
@@ -80,19 +88,23 @@ namespace PL_User.Controllers
             }
         }
 
-
-        public ActionResult EditUser(int id)
+        [AuthorizeUser(RoleEnums.User_Updated)]
+        public ActionResult EditUser(long id)
         {
             UserDTO user = _services.GetUserById(id);
+            LoadRoleStatic();
             return View(user);
         }
+
         [HttpPost]
+        [AuthorizeUser(RoleEnums.User_Updated)]
         public ActionResult EditUser(UserDTO user)
         {
             if (ModelState.IsValid)
             {
                 var errorMessage = "";
-                if (_services.CreateOrEdit(user, out errorMessage))
+                long userId = (long)Session["Id"];
+                if (_services.CreateOrEdit(user, out errorMessage, userId))
                 {
                     TempData["updateSuccess"] = "Update Successful or Unchanges";
                     return RedirectToAction("Index", "User");
@@ -113,7 +125,8 @@ namespace PL_User.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetUserToEdit(int userId)
+        [AuthorizeUser(RoleEnums.User_Updated)]
+        public ActionResult GetUserToEdit(long userId)
         {
             if (userId != 0)
             {
@@ -131,7 +144,17 @@ namespace PL_User.Controllers
         public ActionResult ViewChange(int id)
         {
             UserDTO user = _services.GetUserById(id);
+            Session["PreviousPage"] = Request.UrlReferrer.ToString();
             return View(user);
+        }
+
+        public ActionResult GoBack()
+        {
+            if (Session["PreviousPage"] != null)
+            {
+                return Redirect(Session["PreviousPage"].ToString());
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -140,7 +163,8 @@ namespace PL_User.Controllers
             if (ModelState.IsValid)
             {
                 string errorMessage = string.Empty;
-                if (_services.ChangePassword(input, out errorMessage))
+                long userId = (long)Session["Id"];
+                if (_services.ChangePassword(input, out errorMessage, userId))
                 {
                     TempData["ChangeSuccess"] = "Change Successful";
                     return RedirectToAction("ViewChange", "User", new { id = input.UserId });
@@ -157,6 +181,11 @@ namespace PL_User.Controllers
                 TempData["ChangeFailed"] = string.Join(", ", errors);
                 return RedirectToAction("ViewChange", "User", new { id = input.UserId });
             }
+        }
+
+        private void LoadRoleStatic()
+        {
+            ViewBag.Role = _roleServices.GetStaticRole();
         }
 
     }

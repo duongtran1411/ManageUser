@@ -63,22 +63,22 @@ namespace PL_User.Controllers
             if (ModelState.IsValid)
             {
                 var errorMessage = "";
-                if (_services.CreateOrEdit(user, out errorMessage))
+                if (_services.RegisterUser(user, out errorMessage))
                 {
                     TempData["RegisterSuccess"] = "Register Successful ! Login Right Now";
-                    return View("FormLogin", "Login");
+                    return RedirectToAction("FormLogin", "Login");
                 }
                 else
                 {
                     TempData["Dupplicate"] = errorMessage;
-                    return View("FormRegister", "User");
+                    return RedirectToAction("FormRegister", "Login");
                 }
             }
             else
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToArray();
                 TempData["registerFailed"] = string.Join(", ", errors);
-                return RedirectToAction("FormRegister", "User");
+                return RedirectToAction("FormRegister", "Login");
             }
         }
     }

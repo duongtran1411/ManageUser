@@ -65,27 +65,27 @@
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.3.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.3.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -119,10 +119,14 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="AuthorizeUser.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\Config\PermissionController.cs" />
+    <Compile Include="Controllers\Config\RoleController.cs" />
+    <Compile Include="Controllers\Config\UserController.cs" />
+    <Compile Include="Extension\SessionExtension.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -596,6 +600,40 @@
     <Content Include="Content\plugins\ekko-lightbox\ekko-lightbox.css" />
     <Content Include="Content\plugins\ekko-lightbox\ekko-lightbox.js" />
     <Content Include="Content\plugins\ekko-lightbox\ekko-lightbox.min.js" />
+    <Content Include="Content\plugins\fancyTree\dist\jquery.fancytree-all-deps.js" />
+    <Content Include="Content\plugins\fancyTree\dist\jquery.fancytree-all-deps.min.js" />
+    <Content Include="Content\plugins\fancyTree\dist\jquery.fancytree-all.js" />
+    <Content Include="Content\plugins\fancyTree\dist\jquery.fancytree-all.min.js" />
+    <Content Include="Content\plugins\fancyTree\dist\jquery.fancytree.min.js" />
+    <Content Include="Content\plugins\fancyTree\dist\LICENSE.txt" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.ariagrid.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.childcounter.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.clones.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.columnview.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.dnd.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.dnd5.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.edit.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.filter.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.fixed.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.glyph.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.grid.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.gridnav.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.logger.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.menu.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.multi.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.persist.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.table.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.themeroller.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.ui-deps.js" />
+    <Content Include="Content\plugins\fancyTree\dist\modules\jquery.fancytree.wide.js" />
+    <Content Include="Content\plugins\fancyTree\dist\skin-vista\icons-rtl.gif" />
+    <Content Include="Content\plugins\fancyTree\dist\skin-vista\icons.gif" />
+    <Content Include="Content\plugins\fancyTree\dist\skin-vista\loading.gif" />
+    <Content Include="Content\plugins\fancyTree\dist\skin-vista\ui.fancytree.css" />
+    <Content Include="Content\plugins\fancyTree\dist\skin-vista\ui.fancytree.min.css" />
+    <Content Include="Content\plugins\fancyTree\dist\skin-vista\vline-rtl.gif" />
+    <Content Include="Content\plugins\fancyTree\dist\skin-vista\vline.gif" />
     <Content Include="Content\plugins\fastclick\fastclick.js" />
     <Content Include="Content\plugins\filterizr\filterizr.min.js" />
     <Content Include="Content\plugins\filterizr\jquery.filterizr.min.js" />
@@ -2220,6 +2258,9 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Content\plugins\fancyTree\dist\jquery.fancytree-all-deps.min.js.map" />
+    <Content Include="Content\plugins\fancyTree\dist\skin-common.less" />
+    <Content Include="Content\plugins\fancyTree\dist\skin-vista\ui.fancytree.less" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\dataTables.bootstrap5.js" />
     <Content Include="Scripts\dataTables.js" />
@@ -2332,6 +2373,12 @@
     <Content Include="Views\User\AddUser.cshtml" />
     <Content Include="Views\User\EditUser.cshtml" />
     <Content Include="Views\Login\FormRegister.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\AddRole.cshtml" />
+    <Content Include="Views\Role\EditRole.cshtml" />
+    <Content Include="Views\Permission\Index.cshtml" />
+    <Content Include="Views\Permission\AddPermission.cshtml" />
+    <Content Include="Views\Permission\EditPermission.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

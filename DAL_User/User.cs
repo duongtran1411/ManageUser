@@ -14,13 +14,28 @@ namespace DAL_User
     
     public partial class User
     {
-        public int id { get; set; }
-        public string user_name { get; set; }
-        public string password { get; set; }
-        public string first_name { get; set; }
-        public string last_name { get; set; }
-        public string email { get; set; }
-        public string phone { get; set; }
-        public System.DateTime created_time { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public User()
+        {
+            this.UserRoles = new HashSet<UserRole>();
+        }
+    
+        public long Id { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string CreatedBy { get; set; }
+        public System.DateTime CreatedTime { get; set; }
+        public string UpdatedBy { get; set; }
+        public Nullable<System.DateTime> UpdatedTime { get; set; }
+        public string DeletedBy { get; set; }
+        public Nullable<System.DateTime> DeletedTime { get; set; }
+        public bool IsDeleted { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }

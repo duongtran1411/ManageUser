@@ -51,50 +51,65 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminPageContext.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AdminPageContext.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AdminPageContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AdminPageContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AdminPageContext.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AdminPageContext.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Permission.cs">
+      <DependentUpon>AdminPageContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PermissionRole.cs">
+      <DependentUpon>AdminPageContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Role.cs">
+      <DependentUpon>AdminPageContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>AdminPageContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="User.cs">
-      <DependentUpon>UserContext.tt</DependentUpon>
+      <DependentUpon>AdminPageContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserContext.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UserContext.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserContext.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UserContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserContext.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UserContext.edmx</DependentUpon>
+    <Compile Include="UserRole.cs">
+      <DependentUpon>AdminPageContext.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EntityDeploy Include="AdminPageContext.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AdminPageContext.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="AdminPageContext.edmx.diagram">
+      <DependentUpon>AdminPageContext.edmx</DependentUpon>
+    </None>
     <None Include="App.Config" />
     <None Include="packages.config" />
-    <EntityDeploy Include="UserContext.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>UserContext.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="UserContext.edmx.diagram">
-      <DependentUpon>UserContext.edmx</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UserContext.Context.tt">
+    <Content Include="AdminPageContext.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>UserContext.edmx</DependentUpon>
-      <LastGenOutput>UserContext.Context.cs</LastGenOutput>
+      <DependentUpon>AdminPageContext.edmx</DependentUpon>
+      <LastGenOutput>AdminPageContext.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="UserContext.tt">
+    <Content Include="AdminPageContext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>UserContext.edmx</DependentUpon>
-      <LastGenOutput>UserContext.cs</LastGenOutput>
+      <DependentUpon>AdminPageContext.edmx</DependentUpon>
+      <LastGenOutput>AdminPageContext.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

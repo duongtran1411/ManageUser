@@ -1,0 +1,101 @@
+﻿@model BLL_User.Model.PermissionDTO
+
+@{
+    ViewBag.Title = "AddPermission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="../../Content/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="../../Content/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<div class="card card-secondary">
+    <div class="card-header">
+        <h3 class="card-title">Thêm mới</h3>
+    </div>
+    @using (Html.BeginForm("AddPermission", "Permission", FormMethod.Post, new { id = "formPermission" }))
+    {
+        <div class="card-body">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label>Tên quyền</label>
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Nhập tên quyền" })
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label>Mã quyền</label>
+                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @placeholder = "Nhập mã quyền" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label>Loại quyền</label>
+                        @Html.DropDownList("Type", new SelectList(ViewBag.PermissionTypes, "Key", "Value"), new { @class = "form-control select2-nosearch" })
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group" id="ServerGr">
+                        <label>Quyền cha</label>
+                        @Html.DropDownList("ParentId", new SelectList(ViewBag.PermissionsParent, "Id", "Name"), "Lựa chọn", new { @class = "form-control select2" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card-footer">
+            <button type="submit" class="btn btn-info btnEditCustom" id="btnSave"><i class="far fa-save"></i>Lưu</button>
+            <a href="/Permission/Index" class="btn btn-secondary btnEditCustom"><i class="fas fa-sign-out-alt"></i>Hủy</a>
+        </div>
+    }
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="../../Content/plugins/select2/js/select2.full.min.js"></script>
+    <script>
+        $(function () {
+            $('.select2').select2();
+
+            $('.select2-nosearch').select2({
+                minimumResultsForSearch: -1
+            });
+                
+            validateForm();
+            function validateForm() {
+                $('#formPermission').validate({
+                    ignore: false,
+                    rules: {
+                        ObjectName: { required: true },
+                        Code: { required: true }
+                    },
+                    messages: {
+                        Name: { required: "Tên quyền không được để trống" },
+                        Location: { required: "Mã quyền không được để trống" },
+                    },
+                    errorPlacement: function (error, element) {
+                        error.insertAfter(element);
+
+                    }
+                });
+            }
+            $('.select2-selection').css('height', '40px');
+            $('.select2-selection__arrow').css('padding-top','10px')
+        });
+
+        const addFailed = '@TempData["AddFailed"]'
+        if (addFailed) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: addFailed,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    </script>
+}
+
+

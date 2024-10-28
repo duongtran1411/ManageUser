@@ -6,7 +6,7 @@ namespace BLL_User.BUS
 {
     public class UserProfile : Profile
     {
-        public UserProfile() {
+        /*public UserProfile() {
             CreateMap<User, UserDTO>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.id))
                 .ForMember(des => des.UserName, opt => opt.MapFrom(src => src.user_name))
@@ -17,6 +17,6 @@ namespace BLL_User.BUS
                 .ForMember(des => des.Phone, opt => opt.MapFrom(src => src.phone))
                 .ForMember(des => des.CreatedTime, opt => opt.MapFrom(src => src.created_time))
                 .ReverseMap();
-        }
+        }*/
     }
 }

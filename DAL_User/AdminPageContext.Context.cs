@@ -13,10 +13,10 @@ namespace DAL_User
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class AssignmentEntities2 : DbContext
+    public partial class AdminPageModel : DbContext
     {
-        public AssignmentEntities2()
-            : base("name=AssignmentEntities2")
+        public AdminPageModel()
+            : base("name=AdminPageModel")
         {
         }
     
@@ -25,6 +25,11 @@ namespace DAL_User
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Permission> Permissions { get; set; }
+        public virtual DbSet<PermissionRole> PermissionRoles { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
     }
 }

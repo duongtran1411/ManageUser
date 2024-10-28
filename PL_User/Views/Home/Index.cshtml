@@ -42,5 +42,12 @@
             text: loginSuccess
         });
     }
-
+    const isPermission = '@TempData["Error"]';
+    if (isPermission) {
+        Swal.fire({
+            icon: "error",
+            title: "No Permission",
+            text: isPermission
+        });
+    }
 </script>

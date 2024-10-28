@@ -1,0 +1,188 @@
+﻿@using BLL_User.Enumeration
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/Datatable/css")
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Danh sách vai trò</h3>
+                    <div class="d-flex justify-content-sm-end">
+                        <a href="/Role/AddRole" class="btn btn-info btnTableCustom mb-1 " id="myButton"><i class="fas fa-plus-circle"></i> Add</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="tableRole" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên vai trò</th>
+                                <th>Người tạo</th>
+                                <th>Ngày tạo</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Validate/Js")
+    <script>
+        $(document).ready(function () {
+            $('#tableRole').DataTable({
+                "serverSide": true,
+                "processing": true,
+                "orderMulti": false,
+                "ordering": false,
+                "lengthMenu": [
+                    [10, 20, 30],
+                    [10, 20, 30]
+                ],
+                "language": {
+                    searchPlaceholder: "Tìm kiếm theo role name",
+                },
+                "columnDefs": [{
+                    "targets": [1],
+                    "className": "text-center"
+                }],
+                "ajax": {
+                    "url": "/Role/ListRole",
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columns":
+                    [
+                        {
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            },
+                            "name": "STT", autoWidth: true,
+                        },
+                        { "data": "RoleName", "name": "Tên vai trò", autoWidth: true },
+                        { "data": "CreatedBy", "name": "Người tạo", autoWidth: true },
+                        {
+                            "data": "CreatedTime", "name": "Ngày tạo", autoWidth: true,
+                            "render": function (data, type, full, meta) {
+                                if (full.CreatedTime) {
+                                    var timestamp = full.CreatedTime.match(/\d+/)[0];
+                                    var myDate = new Date(parseInt(timestamp, 10));
+                                    var options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+                                    return myDate.toLocaleDateString('en-GB', options);
+                                }
+                                return "";
+                            }
+                        },
+                        {
+                            "data": null,
+                            "name": "Action",
+                            "render": function (data, type, full, meta) {
+                                var actionButtons = '';
+                                if ('@RoleEnums.Role_Updated') {
+                                    actionButtons += '<a class="btn" href="/Role/EditRole/' + full.Id + '"><i class="far fa-edit"></i></a>';
+                                }
+                                if ('@RoleEnums.Role_Deleted') {
+                                    actionButtons += '<a id="btnBlock" class="btn" onclick="DeleteRole(' + full.Id + ')"><i class="fas far fa-trash-alt"></i></a>';
+                                }
+                                return actionButtons;
+                            },
+                            "orderable": false,
+                            autoWidth: true
+                        }
+                    ]
+            })
+        });
+
+
+        function DeleteRole(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Will you delete role",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete user!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/Role/DeleteRole",
+                        type: "GET",
+                        data: {
+                            roleId: id
+                        },
+                        success: function (response) {
+                            if (response.success == true) {
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: response.message,
+                                    icon: "success",
+                                    timer: 3000
+                                });
+                                console.log("deleted success");
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 2000)
+                            }
+
+                            if (response.success == false) {
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: response.message,
+                                    icon: "error",
+                                    timer: 3000
+                                });
+                            }
+                        },
+                        error: function (xhr) {
+                            console.log(xhr)
+                        }
+                    })
+                }
+            });
+        };
+
+        const addSuccess = '@TempData["AddSuccess"]';
+        if (addSuccess) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: addSuccess,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+        const addFailed = '@TempData["AddFailed"]';
+        if (addFailed) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: addFailed,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+
+        const updateSucess = '@TempData["UpdateSucess"]'
+        if (updateSucess) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: updateSucess,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+
+        
+    </script>
+}
+

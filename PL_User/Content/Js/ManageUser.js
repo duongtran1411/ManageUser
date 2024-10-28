@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
 
     $.validator.addMethod("RegexPassword", function (value, element) {
-        return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#$%^&*?])[a-zA-Z0-9!#$%^&*?]{8,}$/.test(value);
+        return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@!#$%^&*?])[a-zA-Z0-9@!#$%^&*?]{8,}$/.test(value);
     }, "Password at least 1 special char, digit and upper letter");
 
 

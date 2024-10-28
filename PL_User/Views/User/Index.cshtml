@@ -1,17 +1,15 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using BLL_User.Enumeration;
 @Styles.Render("~/Datatable/css")
 @Styles.Render("~/ManageUser/css")
-<style>
-    
-</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">List User</h3>
+                    <h3 class="card-title">Danh sách người dùng</h3>
                     <div class="d-flex justify-content-sm-end">
                         <a href="/User/AddUser" class="btn btn-info btnTableCustom mb-1 " id="myButton"><i class="fas fa-plus-circle"></i> Add</a>
                     </div>
@@ -214,8 +212,12 @@
                             "name": "Action",
                             "render": function (data, type, full, meta) {
                                 var actionButtons = '';
-                                actionButtons += '<a class="btn" href="/User/EditUser/' + full.Id + '"><i class="far fa-edit"></i></a> ';
-                                actionButtons += '<a id="btnBlock" class="btn" onclick="DeleteUser(' + full.Id + ')"><i class="fas far fa-trash-alt"></i></a>';
+                                if ('@RoleEnums.User_Updated') {
+                                    actionButtons += '<a class="btn" href="/User/EditUser/' + full.Id + '"><i class="far fa-edit"></i></a> ';
+                                }
+                                if ('@RoleEnums.User_Deleted') {
+                                    actionButtons += '<a id="btnBlock" class="btn" onclick="DeleteUser(' + full.Id + ')"><i class="fas far fa-trash-alt"></i></a>';
+                                }
                                 actionButtons += '<a class="btn" href="/User/ViewChange/' + full.Id + '"><i class="fas fa-redo"></i></a> ';
                                 return actionButtons;
                             },

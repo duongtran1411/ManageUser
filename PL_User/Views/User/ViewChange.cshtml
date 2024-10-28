@@ -6,36 +6,46 @@
 }
 
 @Styles.Render("~/ChangePass/css")
-<h2>User Name : @Model.UserName</h2>
-<div class="row">
-    <div class="col-4">
-        <form action="/User/ChangePass" method="post" id="formChangePassword">
-            <input type="hidden" value="@Model.Id" name="UserId" />
-            <div class="col-12">
-                <label class="form-label"><sup>*</sup>Your Password:</label>
-                <input class="form-control mb-2" type="password" name="password" tabindex="1" />
-            </div>
-            <div class="col-12">
-                <label class="form-label"><sup>*</sup>New Password:</label>
-                <input class="form-control mb-2" type="password" name="newPassword" id="newPass" tabindex="2" />
-            </div>
-            <div class="col-12">
-                <label class="form-label"><sup>*</sup>Confirm Password:</label>
-                <input class="form-control mb-2" type="password" name="confirmPassword" tabindex="3" />
-            </div>
-            <div class="col-6">
-                <button class="btn btn-info" type="submit"><i class="far fa-save"></i> Save</button>
-                <a href="/User/Index" class="btn btn-secondary btnEditCustom" id="btnBack"><i class="fas fa-sign-out-alt"></i>Close</a>
-            </div>
-        </form>
+<div class="card card-secondary">
+    <div class="card-header">
+        <h3 class="card-title">Add Role</h3>
     </div>
+    @using (Html.BeginForm("ChangePass", "User", FormMethod.Post, new { id = "formRole" }))
+    {
+        <div class="card-body">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
+            <div class="row">
+                <div class="col-5">
+                     <h2>User Name : @Model.UserName</h2>
+                    <div class="form-group">
+                        <label class="form-label"><sup>*</sup>Your Password:</label>
+                        <input class="form-control mb-2" type="password" name="password" tabindex="1" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><sup>*</sup>New Password:</label>
+                        <input class="form-control mb-2" type="password" name="newPassword" id="newPass" tabindex="2" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><sup>*</sup>Confirm Password:</label>
+                        <input class="form-control mb-2" type="password" name="confirmPassword" tabindex="3" />
+                    </div>
+                </div>
+                <div class="col-7">
+                    <div id="treePermission"></div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-info btnEditCustom" id="btnSave"><i class="far fa-save"></i>Lưu</button>
+            <a href="/User/GoBack" class="btn btn-secondary btnEditCustom" id="btnBack"><i class="fas fa-sign-out-alt"></i>Hủy</a>
+        </div>
+    }
 </div>
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/ValidatePassword/Js")
     <script>
-
-
             const changeSuccess ='@TempData["ChangeSuccess"]';
             if (changeSuccess) {
                 Swal.fire({
