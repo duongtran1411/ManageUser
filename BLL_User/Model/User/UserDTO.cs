@@ -11,7 +11,6 @@ namespace BLL_User.Model
         [Required]
         [MinLength(8, ErrorMessage = "Password must be length at least 8 characters")]
         [MaxLength(50, ErrorMessage = "Password must be length not over 50 characters")]
-        
         public string UserName { get; set; }
         [Required]
         [MinLength(8, ErrorMessage = "Password must be length at least 8 characters")]

@@ -33,19 +33,17 @@
                 <div class="col-3">
                     <div class="form-group">
                         <label>Loại quyền</label>
-                        @Html.DropDownList("Type", new SelectList(ViewBag.PermissionTypes, "Key", "Value"), new { @class = "form-control select2-nosearch" })
+                        @Html.DropDownList("Type", new SelectList(ViewBag.PermissionTypes, "Key", "Value"), new { @class = "form-control select2-nosearch", @id = "TypeDropdown" })
                     </div>
                 </div>
                 <div class="col-3">
                     <div class="form-group" id="ServerGr">
                         <label>Quyền cha</label>
-                        @Html.DropDownList("ParentId", new SelectList(ViewBag.PermissionsParent, "Id", "Name"), "Lựa chọn", new { @class = "form-control select2" })
+                        @Html.DropDownList("ParentId", new SelectList(ViewBag.PermissionsParent, "Id", "Name"), "Lựa chọn", new { @class = "form-control select2" , @id = "ParentIdDropdown"})
                     </div>
                 </div>
             </div>
         </div>
-
-
         <div class="card-footer">
             <button type="submit" class="btn btn-info btnEditCustom" id="btnSave"><i class="far fa-save"></i>Lưu</button>
             <a href="/Permission/Index" class="btn btn-secondary btnEditCustom"><i class="fas fa-sign-out-alt"></i>Hủy</a>
@@ -82,8 +80,31 @@
                 });
             }
             $('.select2-selection').css('height', '40px');
-            $('.select2-selection__arrow').css('padding-top','10px')
+            $('.select2-selection__arrow').css('margin-top', '5px');
         });
+
+
+        $(document).ready(function () {
+            var permission = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.PermissionsParent));
+            $('#TypeDropdown').change(function () {
+                var selectLevel = parseInt($(this).val());
+                var filterPermission = [];
+
+                if (selectLevel === 2) {
+                    filterPermission = permission.filter(p => p.Type == 1);
+                }
+
+                if (selectLevel === 3) {
+                    filterPermission = permission.filter(p => p.Type == 2);
+                }
+
+                $('#ParentIdDropdown').empty().append('<option value="">Lựa chọn</option>');
+                filterPermission.forEach(function (permission) {
+                    $('#ParentIdDropdown').append(`<option value="${permission.Id}">${permission.Name}</option>`);
+                });
+
+            })
+        })
 
         const addFailed = '@TempData["AddFailed"]'
         if (addFailed) {

@@ -2,10 +2,8 @@
 using BLL_User.Extension;
 using BLL_User.Model;
 using BLL_User.Model.Role;
-using Newtonsoft.Json;
 using BLL_User.Enumeration;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -121,7 +119,6 @@ namespace PL_User.Controllers
         {
             var result = new List<TreeViewDTO>();
             result = _services.GetPermissionbyRoleId(roleId);
-            Debug.WriteLine(JsonConvert.SerializeObject(result));
             return Json(result, JsonRequestBehavior.AllowGet);
         }
     }

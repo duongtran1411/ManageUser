@@ -33,13 +33,13 @@
                 <div class="col-3">
                     <div class="form-group">
                         <label>Loại quyền</label>
-                        @Html.DropDownListFor(m => m.Type, new SelectList(ViewBag.PermissionTypes, "Key", "Value"), new { @class = "form-control select2-nosearch" })
+                        @Html.DropDownListFor(m => m.Type, new SelectList(ViewBag.PermissionTypes, "Key", "Value"), new { @class = "form-control select2-nosearch" , @id= "TypeDropdown" })
                     </div>
                 </div>
                 <div class="col-3">
                     <div class="form-group" id="ServerGr">
                         <label>Quyền cha</label>
-                        @Html.DropDownListFor(m => m.ParentId, new SelectList(ViewBag.PermissionsParent, "Id", "Name"), "Lựa chọn", new { @class = "form-control select2" })
+                        @Html.DropDownListFor(m => m.ParentId, new SelectList(ViewBag.PermissionsParent, "Id", "Name"), "Lựa chọn", new { @class = "form-control select2", @id = "ParentIdDropdown" })
                     </div>
                 </div>
             </div>
@@ -56,6 +56,57 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script src="../../Content/plugins/select2/js/select2.full.min.js"></script>
     <script>
+        $(function () {
+            $('.select2').select2();
+
+            $('.select2-nosearch').select2({
+                minimumResultsForSearch: -1
+            });
+
+            validateForm();
+            function validateForm() {
+                $('#formPermission').validate({
+                    ignore: false,
+                    rules: {
+                        ObjectName: { required: true },
+                        Code: { required: true }
+                    },
+                    messages: {
+                        Name: { required: "Tên quyền không được để trống" },
+                        Location: { required: "Mã quyền không được để trống" },
+                    },
+                    errorPlacement: function (error, element) {
+                        error.insertAfter(element);
+
+                    }
+                });
+            }
+            $('.select2-selection').css('height', '40px');
+            $('.select2-selection__arrow').css('margin-top', '5px');
+        });
+
+        $(document).ready(function () {
+            var permission = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.PermissionsParent));
+            $('#TypeDropdown').change(function () {
+                var selectLevel = parseInt($(this).val());
+                var filterPermission = [];
+
+                if (selectLevel === 2) {
+                    filterPermission = permission.filter(p => p.Type == 1);
+                }
+
+                if (selectLevel === 3) {
+                    filterPermission = permission.filter(p => p.Type == 2);
+                }
+
+                $('#ParentIdDropdown').empty().append('<option value="">Lựa chọn</option>');
+                filterPermission.forEach(function (permission) {
+                    $('#ParentIdDropdown').append(`<option value="${permission.Id}">${permission.Name}</option>`);
+                });
+
+            })
+        })
+
         const updateFailed = '@TempData["UpdateFailed"]'
         if (updateFailed) {
             Swal.fire({

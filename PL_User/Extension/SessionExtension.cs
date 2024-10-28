@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Security.Policy;
-using System.Web;
+﻿using System.Web;
 using BLL_User.BUS;
 
 namespace PL_User.Extension
