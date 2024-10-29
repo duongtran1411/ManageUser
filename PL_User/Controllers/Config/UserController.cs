@@ -29,7 +29,6 @@ namespace PL_User.Controllers
                 var searchText = Request.Form.GetValues("search[value]").FirstOrDefault();
                 var totalRecord = 0;
                 var listUser = _services.GetUserByPaging(new FilterDTO { SkipCount = skip, PageCount = take, FilterSearch = searchText }, out totalRecord);
-
                 return Json(new { draw, recordsFiltered = totalRecord, recordsTotal = totalRecord, data = listUser });
             }
             catch (Exception)

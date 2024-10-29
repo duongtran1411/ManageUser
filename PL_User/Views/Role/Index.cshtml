@@ -35,6 +35,7 @@
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Validate/Js")
+    @Scripts.Render("~/CheckPermission/Js")
     <script>
         $(document).ready(function () {
             $('#tableRole').DataTable({
@@ -86,10 +87,10 @@
                             "name": "Action",
                             "render": function (data, type, full, meta) {
                                 var actionButtons = '';
-                                if ('@RoleEnums.Role_Updated') {
+                                if (CheckPermission('@RoleEnums.Role_Updated')) {
                                     actionButtons += '<a class="btn" href="/Role/EditRole/' + full.Id + '"><i class="far fa-edit"></i></a>';
                                 }
-                                if ('@RoleEnums.Role_Deleted') {
+                                if (CheckPermission('@RoleEnums.Role_Deleted')) {
                                     actionButtons += '<a id="btnBlock" class="btn" onclick="DeleteRole(' + full.Id + ')"><i class="fas far fa-trash-alt"></i></a>';
                                 }
                                 return actionButtons;
@@ -101,6 +102,11 @@
             })
         });
 
+        if (CheckPermission('@RoleEnums.Role_Created')) {
+            $('#myButton').css('display', 'block')
+        } else {
+            $('#myButton').css('display', 'none');
+        }
 
         function DeleteRole(id) {
             Swal.fire({
@@ -182,7 +188,7 @@
             });
         }
 
-        
+
     </script>
 }
 

@@ -194,9 +194,11 @@
     <Content Include="Content\dist\js\pages\dashboard.js" />
     <Content Include="Content\dist\js\pages\dashboard2.js" />
     <Content Include="Content\dist\js\pages\dashboard3.js" />
+    <Content Include="Content\Js\CheckPermissionUser.js" />
     <Content Include="Content\Js\ManageUser.js" />
     <Content Include="Content\Js\ValidateChange.js" />
     <Content Include="Content\ManageUser.css" />
+    <Content Include="Content\Permission.css" />
     <Content Include="Content\plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.css" />
     <Content Include="Content\plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.min.css" />
     <Content Include="Content\plugins\bootstrap-colorpicker\js\bootstrap-colorpicker.js" />

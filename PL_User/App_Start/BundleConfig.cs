@@ -28,6 +28,10 @@ namespace PL_User
                  "~/Content/site.css"
             ));
 
+            bundles.Add(new StyleBundle("~/Permission/css").Include(
+                "~/Content/Permission.css"
+            ));
+
             bundles.Add(new StyleBundle("~/ManageUser/css").Include(
                 "~/Content/ManageUser.css"
             ));
@@ -56,6 +60,10 @@ namespace PL_User
 
             bundles.Add(new ScriptBundle("~/ValidatePassword/Js").Include(
                 "~/Content/Js/ValidateChange.js"
+            ));
+
+            bundles.Add(new ScriptBundle("~/CheckPermission/Js").Include(
+                "~/Content/Js/CheckPermissionUser.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/loadApp").Include(

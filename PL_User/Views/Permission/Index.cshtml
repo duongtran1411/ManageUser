@@ -3,8 +3,8 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@Styles.Render("~/Permission/css")
 <link rel="stylesheet" href="../../Content/plugins/fancyTree/dist/skin-vista/ui.fancytree.min.css">
-<link href="fancytree/skin-win8/ui.fancytree.css" rel="stylesheet" type="text/css">
 <div class="container-fluid">
     <div class="row">
         <div class="col-6">
@@ -24,8 +24,10 @@
 </div>
 
 @section scripts{
+    @Scripts.Render("~/CheckPermission/Js")
     <script src="../../Content/plugins/fancyTree/dist/jquery.fancytree-all-deps.min.js"></script>
     <script>
+        
         $(function () {
             $('#tree').fancytree
                 ({
@@ -38,10 +40,11 @@
                         var nodeSpan = $(node.span);
                         if (!nodeSpan.data('rendered')) {
                             var control = "";
-                            if ('@RoleEnums.Permission_Updated') {
+                            if (CheckPermission('@RoleEnums.Permission_Updated')) {
                                 control += '<a class="btn btnActionTable btnActionTreeView" href="/Permission/EditPermission/' + node.key + '"><i class="far fa-edit"></i></a>';
                             }
-                            if ('@RoleEnums.Permission_Deleted') {
+
+                            if (CheckPermission('@RoleEnums.Permission_Deleted')) {
                                 control += '<a class="btn btnActionTable btnActionTreeView" onclick="DeletePermission(' + node.key + ')"><i class="fas far fa-trash-alt"></i></a>';
                             }
                             nodeSpan.prepend(control);
@@ -49,7 +52,14 @@
                         }
                     }
                 });
-         })
+        })
+
+        if (CheckPermission('@RoleEnums.Permission_Created')) {
+            $('#btnCreate').css('display', 'block');
+        } else {
+            $('#btnCreate').css('display', 'none');
+        }
+
 
         const addSuccess = '@TempData["AddSucess"]';
         if (addSuccess) {

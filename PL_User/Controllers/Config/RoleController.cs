@@ -112,7 +112,7 @@ namespace PL_User.Controllers.Role
                 else
                 {
                     TempData["UpdateFailed"] = errorMessage;
-                    return View(role);
+                    return RedirectToAction("EditRole","Role");
                 }
             }
             else

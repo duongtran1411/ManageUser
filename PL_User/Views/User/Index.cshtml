@@ -39,6 +39,7 @@
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Validate/Js")
+    @Scripts.Render("~/CheckPermission/Js")
     <script>
 
         $('#btnAdd').on('click', function () {
@@ -123,8 +124,6 @@
                 }
             });
         };
-
-
 
         const result = '@TempData["updateSuccess"]';
         if (result) {
@@ -212,10 +211,10 @@
                             "name": "Action",
                             "render": function (data, type, full, meta) {
                                 var actionButtons = '';
-                                if ('@RoleEnums.User_Updated') {
+                                if (CheckPermission('@RoleEnums.User_Updated')) {
                                     actionButtons += '<a class="btn" href="/User/EditUser/' + full.Id + '"><i class="far fa-edit"></i></a> ';
                                 }
-                                if ('@RoleEnums.User_Deleted') {
+                                if (CheckPermission('@RoleEnums.User_Deleted')) {
                                     actionButtons += '<a id="btnBlock" class="btn" onclick="DeleteUser(' + full.Id + ')"><i class="fas far fa-trash-alt"></i></a>';
                                 }
                                 actionButtons += '<a class="btn" href="/User/ViewChange/' + full.Id + '"><i class="fas fa-redo"></i></a> ';
@@ -225,6 +224,12 @@
                         }
                     ]
             });
+
+            if (CheckPermission('@RoleEnums.User_Created')) {
+                $('#myButton').css('display', 'block');
+            } else {
+                $('#myButton').css('display', 'none');
+            }
 
             $('#dt-search-0').css('width', '220px')
         })

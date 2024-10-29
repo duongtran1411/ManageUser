@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using System.Diagnostics;
 
 namespace BLL_User.BUS
 {
@@ -102,7 +101,7 @@ namespace BLL_User.BUS
             }
             if (input.Id != 0)
             {
-                if (checkNameExisted != null && checkNameExisted.Id == input.Id)
+                if (checkNameExisted != null && checkNameExisted.Id != input.Id)
                 {
                     errorMessage = "Permission has existed";
                     return false;
@@ -283,7 +282,6 @@ namespace BLL_User.BUS
                             if (permissionLv1 != null && !result.Any(a => a.Id == permissionLv1.Id)) result.Add(permissionLv1);
                         }
                         break;
-
                 }
             }
             return result.Distinct().ToList();

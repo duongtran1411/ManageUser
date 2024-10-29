@@ -27,29 +27,29 @@ namespace PL_User
                 }
                 else
                 {
-                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "FormLogin" } ,  { "controller","Login"} });
+                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "FormLogin" }, { "controller", "Login" } });
                     return;
                 }
             }
-            if(_permissionFilter != null && _permissionFilter.Any() && !CheckPermission(filterContext, filterContext.HttpContext.Session["Id"].ToString()))
+            if (_permissionFilter != null && _permissionFilter.Any() && !CheckPermission(filterContext, filterContext.HttpContext.Session["Id"].ToString()))
             {
                 filterContext.Controller.TempData["Error"] = "You can not access features, Please grant permissions ";
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Index" }, { "controller", "Home" } });
             }
-           
+
         }
         private bool CheckPermission(AuthorizationContext filterContext, string userId)
         {
             var sessionPermission = SessionExtension.GetSession(filterContext.HttpContext, "listpermission_" + userId);
             if (sessionPermission == null) SessionExtension.SetSessionPermission(filterContext.HttpContext, Convert.ToInt32(userId));
             sessionPermission = SessionExtension.GetSession(filterContext.HttpContext, "listpermission_" + userId);
-            var permission = (List<PermissionDTO>) sessionPermission;
-            if(_permissionFilter != null && _permissionFilter.Any())
+            var permission = (List<PermissionDTO>)sessionPermission;
+            if (_permissionFilter != null && _permissionFilter.Any())
             {
                 var IsPermisison = true;
-                foreach(var item in _permissionFilter)
+                foreach (var item in _permissionFilter)
                 {
-                    if(!permission.Any(a => a.Name.Equals(item)))
+                    if (!permission.Any(a => a.Code.Equals(item)))
                     {
                         IsPermisison = false;
                         break;

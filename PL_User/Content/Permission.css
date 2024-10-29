@@ -1,0 +1,12 @@
+﻿.node-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btnActionTreeView {
+    margin: 0;
+    padding: 0px 6px;
+    font-size: 14px;
+    line-height: 1;
+}

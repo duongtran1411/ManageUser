@@ -10,7 +10,6 @@ namespace BLL_User.BUS
     {
         public List<SelectListItem> GetStaticRole()
         {
-            //return GetAllList(u => !u.IsDeleted).Select(a => new SelectListItem { Text = a.RoleName, Value = a.Id.ToString() }).ToList();
             var result = dbContext.Roles
                       .Where(x => !x.IsDeleted)
                       .AsEnumerable()
@@ -18,6 +17,7 @@ namespace BLL_User.BUS
                       .ToList();
             return result;
         }
+
         public List<RoleDTO> GetRolePaging(FilterDTO filter, out int total)
         {
             var listRole = GetAllList(a => !a.IsDeleted && (string.IsNullOrEmpty(filter.FilterSearch) || a.RoleName.ToLower().Contains(filter.FilterSearch.ToLower())));
@@ -59,7 +59,7 @@ namespace BLL_User.BUS
                     
                 }
                 var role = FirstOrDeFault(u => u.Id == roleDto.Id && !u.IsDeleted);
-                if(role.Id != null)
+                if(role != null)
                 {
                     role.RoleName = roleDto.RoleName;
                     if (!string.IsNullOrEmpty(roleDto.PostPermission))
@@ -69,7 +69,6 @@ namespace BLL_User.BUS
                         dbContext.PermissionRoles.RemoveRange(existedPermission);
                         foreach(var permission in permissions)
                         {
-                            if (permission.Contains("root")) continue;
                             var permissionClaim = new PermissionRole
                             {
                                 RoleId = role.Id,
