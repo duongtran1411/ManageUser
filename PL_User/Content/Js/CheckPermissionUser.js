@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿function FetchPermission() {
     $.ajax({
         url: "/User/GetPermissionUser",
         type: "GET",
@@ -6,16 +6,16 @@
             if (response.success && response.permission) {
                 var listPermission = JSON.stringify(response.permission)
                 window.localStorage.setItem("permissions", listPermission);
-                console.log("fecth success");
-            } else {
-                console.log("Failed to fetch permissions");
             }
         },
         error: function (xhr) {
             console.log(xhr);
         }
     });
-})
+}
+FetchPermission();
+
+
 function CheckPermission(role) {
     var permissions = window.localStorage.getItem('permissions');
     if (permissions) {
