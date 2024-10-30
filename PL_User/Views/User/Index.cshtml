@@ -50,34 +50,6 @@
             $('#inforUserDetail').modal('hide');
         });
 
-        function EditUser(id) {
-            $.ajax({
-                url: "/User/GetUserToEdit",
-                type: "get",
-                data: {
-                    userId: id
-                },
-                success: function (response) {
-                    $('#editId').val(response.Id);
-                    $('#editFirstName').val(response.FirstName);
-                    $('#editLastName').val(response.LastName);
-                    $('#editEmail').val(response.Email);
-                    $('#editPhone').val(response.Phone);
-                    $('#editUserName').val(response.UserName);
-                    $('#editPassword').val(response.Password);
-                    $('#inforUserDetail').modal({
-                        backdrop: 'static',
-                        keyboard: false
-                    });
-                    $('#inforUserDetail').modal('show');
-                },
-                error: function (xhr) {
-                    console.log(first_name)
-                    console.log(xhr)
-                }
-            });
-        };
-
         function DeleteUser(id) {
             Swal.fire({
                 title: "Are you sure?",
@@ -233,6 +205,8 @@
 
             $('#dt-search-0').css('width', '220px')
         })
+
+
 
     </script>
 }

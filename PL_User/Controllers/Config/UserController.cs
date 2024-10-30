@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 using BLL_User.BUS;
@@ -12,6 +13,7 @@ namespace PL_User.Controllers
     {
         private UserServices _services = new UserServices();
         private RoleServices _roleServices = new RoleServices();
+        private PermissionServices _permissionServices = new PermissionServices();   
         // GET: User
         [AuthorizeUser(RoleEnums.User_View)]
         public ActionResult Index()
@@ -185,6 +187,30 @@ namespace PL_User.Controllers
         private void LoadRoleStatic()
         {
             ViewBag.Role = _roleServices.GetStaticRole();
+        }
+
+        [HttpGet]
+        public ActionResult GetPermissionUser()
+        {
+            long userId = (long)Session["Id"];
+            List<PermissionDTO> permissions = _permissionServices.GetPermissionByUserId(userId);
+            List<string> listCode = new List<string>();
+            if (permissions != null)
+            {
+                foreach(var  permission in permissions)
+                {
+                    listCode.Add(permission.Code);
+                }   
+            }
+            if(listCode != null)
+            {
+                return Json(new { permission = listCode, success = true}, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { permission = listCode, success = false }, JsonRequestBehavior.AllowGet);
+            }
+            
         }
 
     }
