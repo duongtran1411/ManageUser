@@ -10,7 +10,7 @@ namespace BLL_User.BUS
 {
     public class BaseServices<T> where T : class
     {
-        protected AdminPageModel dbContext = new AdminPageModel();
+        protected AdminPageEntities dbContext = new AdminPageEntities();
         public IMapper Mapper;
         public BaseServices()
         {

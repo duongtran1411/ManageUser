@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace PL_User.Controllers
 {
-    public class PermissionController : Controller
+    public class PermissionController : BaseController
     {
         private PermissionServices _services = new PermissionServices();
         // GET: Permission

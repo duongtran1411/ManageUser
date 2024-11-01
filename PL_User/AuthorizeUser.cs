@@ -38,6 +38,7 @@ namespace PL_User
             }
 
         }
+
         private bool CheckPermission(AuthorizationContext filterContext, string userId)
         {
             var sessionPermission = SessionExtension.GetSession(filterContext.HttpContext, "listpermission_" + userId);

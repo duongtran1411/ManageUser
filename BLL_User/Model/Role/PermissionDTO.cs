@@ -13,6 +13,7 @@ namespace BLL_User.Model
         [Required]
         public string Code { get; set; }
         public Nullable<long> ParentId { get; set; }
+        public string Url { get; set; }
         [Required]
         public byte Type { get; set; }
         [MaxLength(50,ErrorMessage = "Created By must be equal or less than 50 character")]

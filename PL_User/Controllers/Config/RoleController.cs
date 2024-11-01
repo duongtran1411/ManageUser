@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace PL_User.Controllers.Role
 {
-    public class RoleController : Controller
+    public class RoleController : BaseController
     {
         private RoleServices _services = new RoleServices();
         private PermissionServices _permServices = new PermissionServices();
@@ -87,7 +87,6 @@ namespace PL_User.Controllers.Role
             {
                 return RedirectToAction("Index", "Role");
             }
-            
         }
 
         public ActionResult GetPermissionRole(long Id)

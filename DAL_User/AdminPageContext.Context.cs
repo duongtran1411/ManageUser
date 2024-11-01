@@ -13,10 +13,10 @@ namespace DAL_User
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class AdminPageModel : DbContext
+    public partial class AdminPageEntities : DbContext
     {
-        public AdminPageModel()
-            : base("name=AdminPageModel")
+        public AdminPageEntities()
+            : base("name=AdminPageEntities")
         {
         }
     

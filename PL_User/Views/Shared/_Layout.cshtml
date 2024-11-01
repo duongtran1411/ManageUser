@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using BLL_User.Model
+@{var menuList = (List<PermissionDTO>)ViewBag.Menu;}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -40,10 +42,10 @@
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <div class="user-panel d-flex">
                             <div class="image">
-                                <img onclick="show()" src="../../Content/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                                <img onclick="Show()" src="../../Content/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                             </div>
                             <div class="info">
-                                <p href="#" class="d-block" onclick="show()">@Session["userName"]</p>
+                                <p href="#" class="d-block" onclick="Show()">@Session["userName"]</p>
                             </div>
                         </div>
                     </a>
@@ -61,7 +63,7 @@
                             <!-- Message End -->
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="/Login/UserLogout" class="dropdown-item">
+                        <a href="#" onclick="Logout()" class="dropdown-item">
                             <!-- Message Start -->
                             <div class="media">
                                 <div class="media-body">
@@ -105,41 +107,50 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-                         with font-awesome or any other icon font library -->
-                        <li class="nav-item">
-                            <a href="#" class="nav-link active">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Quản lí hệ thống
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/User/Index" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Danh sách người dùng</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/Permission/Index" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Danh sách quyền</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/Role/Index" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Danh sách vai trò</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+    with font-awesome or any other icon font library -->
+                        @if (menuList != null)
+                        { 
+                            foreach (var menu in menuList.Where(a => a.ParentId == null).ToList())
+                            {
+                                var menusLv2 = menuList.Where(a => a.ParentId == menu.Id && a.Type == 2).ToList();
+                                if (menusLv2.Any())
+                                {
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="nav-icon fas far"></i>
+                                            <p>
+                                                @menu.Name
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview">
+                                            @foreach (var menuLv2 in menusLv2)
+                                            {
+                                                <li class="nav-item">
+                                                    <a href="@menuLv2.Url" class="nav-link">
+                                                        <i class="far fas nav-icon"></i>
+                                                        <p>@menuLv2.Name</p>
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a href="@menu.Url" class="nav-link">
+                                            <i class="nav-icon fas far"></i>
+                                            <p>
+                                                @menu.Name
+                                            </p>
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        }
+
+                        </ul>
                 </nav>
             </div>
         </aside>
@@ -188,13 +199,18 @@
         <!-- /.control-sidebar -->
     </div>
     <script>
-        function show() {
+        function Show() {
             var menu = document.querySelector("#menuUser");
             if (menu.style.display == "none") {
                 menu.style.display = "block";
             } else {
                 menu.style.display = "none";
             }
+        }
+
+        function Logout() {
+            window.localStorage.removeItem("permissions");
+            window.location.href = "/Login/UserLogout";
         }
     </script>
     @Scripts.Render("~/bundles/site")

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using BLL_User.Enumeration;
 
 namespace BLL_User.BUS
 {
@@ -303,6 +304,7 @@ namespace BLL_User.BUS
                                      Code = rs.Code,
                                      Type = rs.Type,
                                      ParentId = rs.ParentId,
+                                     Url = rs.Url,
                                      Id = rs.Id
                                  }).Distinct().ToList();
                 var AllLevelPermission = GetAllLevelPermission(permission);
@@ -327,9 +329,38 @@ namespace BLL_User.BUS
                                   Code = p.Code,
                                   Type = p.Type,
                                   ParentId = p.ParentId,
+                                  Url = p.Url,
                                   Id = p.Id
                               }).Distinct().ToList();
             return permissions;
+        }
+
+        public List<PermissionDTO> GetMenuByPermission(List<PermissionDTO> listPermission)
+        {
+            var permissions = Mapper.Map<List<Permission>, List<PermissionDTO>>(GetAllList(u => (u.Type == 1 || u.Type == 2)  && !u.IsDeleted).ToList());
+            var viewMenu = listPermission.Where(u => u.Code.Contains("_View")).ToList();
+            var menu = new List<PermissionDTO>();
+            foreach (var permission in viewMenu)
+            {
+                menu.Add(permission);
+                switch(permission.Type)
+                {
+                    case 2:
+                        var permissionLv1 = permissions.FirstOrDefault(u => u.Id == permission.ParentId);
+                        if (permissionLv1 != null && !menu.Any(a => a.Id.Equals(permissionLv1.Id))) menu.Add(permissionLv1) ;  
+                        break;
+                    case 3:
+                        var permissionLv2 = permissions.FirstOrDefault(a => a.Id == permission.ParentId);
+                        if (permissionLv2 != null && !menu.Any(a => a.Id.Equals(permissionLv2.Id)))
+                        {
+                            menu.Add(permissionLv2);
+                            permissionLv1 = permissions.FirstOrDefault(a => a.Id == permissionLv2.ParentId);
+                            if (permissionLv1 != null && !menu.Any(a => a.Id.Equals(permissionLv1.Id))) menu.Add(permissionLv1);
+                        }
+                        break;
+                }
+            }
+            return menu;
         }
     }
 }

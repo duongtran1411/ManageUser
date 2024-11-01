@@ -24,6 +24,7 @@ namespace DAL_User
         public string Name { get; set; }
         public string Code { get; set; }
         public Nullable<long> ParentId { get; set; }
+        public string Url { get; set; }
         public byte Type { get; set; }
         public string CreatedBy { get; set; }
         public System.DateTime CreatedTime { get; set; }
