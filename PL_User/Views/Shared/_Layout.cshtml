@@ -112,8 +112,8 @@
                         { 
                             foreach (var menu in menuList.Where(a => a.ParentId == null).ToList())
                             {
-                                var menusLv2 = menuList.Where(a => a.ParentId == menu.Id && a.Type == 2).ToList();
-                                if (menusLv2.Any())
+                                var menuLv2 = menuList.Where(a => a.ParentId == menu.Id && a.Type == 2).ToList();
+                                if (menuLv2.Any())
                                 {
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">
@@ -124,12 +124,12 @@
                                             </p>
                                         </a>
                                         <ul class="nav nav-treeview">
-                                            @foreach (var menuLv2 in menusLv2)
+                                            @foreach (var item in menuLv2)
                                             {
                                                 <li class="nav-item">
-                                                    <a href="@menuLv2.Url" class="nav-link">
+                                                    <a href="@item.Url" class="nav-link">
                                                         <i class="far fas nav-icon"></i>
-                                                        <p>@menuLv2.Name</p>
+                                                        <p>@item.Name</p>
                                                     </a>
                                                 </li>
                                             }
