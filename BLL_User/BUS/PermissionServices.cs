@@ -349,15 +349,6 @@ namespace BLL_User.BUS
                         var permissionLv1 = permissions.FirstOrDefault(u => u.Id == permission.ParentId);
                         if (permissionLv1 != null && !menu.Any(a => a.Id.Equals(permissionLv1.Id))) menu.Add(permissionLv1) ;  
                         break;
-                    case 3:
-                        var permissionLv2 = permissions.FirstOrDefault(a => a.Id == permission.ParentId);
-                        if (permissionLv2 != null && !menu.Any(a => a.Id.Equals(permissionLv2.Id)))
-                        {
-                            menu.Add(permissionLv2);
-                            permissionLv1 = permissions.FirstOrDefault(a => a.Id == permissionLv2.ParentId);
-                            if (permissionLv1 != null && !menu.Any(a => a.Id.Equals(permissionLv1.Id))) menu.Add(permissionLv1);
-                        }
-                        break;
                 }
             }
             return menu;
