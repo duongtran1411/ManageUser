@@ -64,7 +64,7 @@ namespace PL_User.Controllers
         public void LoadDataStatic()
         {
             ViewBag.PermissionTypes = StaticData.PermissionTypes;
-            ViewBag.PermissionsParent = _services.GetPermissionByType(new List<byte> { 1, 2 });
+            ViewBag.PermissionsParent = _services.GetPermissionByType(new List<byte> { 1, 2, 3 });
         }
 
         [AuthorizeUser(RoleEnums.Permission_Updated)]
